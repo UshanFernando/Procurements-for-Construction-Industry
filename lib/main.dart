@@ -1,6 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:construction_procurement_app/Screens/HomeScreen.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import 'Providers/RequisitionProvider.dart';
+import 'Services/FirestoreService.dart';
 
 void main() {
   runApp(MyApp());
@@ -9,25 +13,31 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.red,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-        inputDecorationTheme: InputDecorationTheme(
-          border: OutlineInputBorder(
-            // width: 0.0 produces a thin "hairline" border
-            borderRadius: BorderRadius.all(Radius.circular(20.0)),
-            borderSide: BorderSide.none,
-            //borderSide: const BorderSide(),
+    final firestoreService = FirestoreService();
+    return MultiProvider(
+        providers: [
+          ChangeNotifierProvider(create: (context) => RequisitionProvider()),
+          StreamProvider(create: (context) => firestoreService.getProducts()),
+        ],
+        child: MaterialApp(
+          title: 'Flutter Demo',
+          theme: ThemeData(
+            primarySwatch: Colors.red,
+            visualDensity: VisualDensity.adaptivePlatformDensity,
+            inputDecorationTheme: InputDecorationTheme(
+              border: OutlineInputBorder(
+                // width: 0.0 produces a thin "hairline" border
+                borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                borderSide: BorderSide.none,
+                //borderSide: const BorderSide(),
+              ),
+              hintStyle: TextStyle(color: Colors.blueGrey),
+              filled: true,
+              fillColor: Colors.white70,
+            ),
           ),
-          hintStyle: TextStyle(color: Colors.blueGrey),
-          filled: true,
-          fillColor: Colors.white70,
-        ),
-      ),
-      home: HomeScreen(),
-    );
+          home: HomeScreen(),
+        ));
   }
 }
 

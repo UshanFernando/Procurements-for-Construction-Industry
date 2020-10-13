@@ -1,5 +1,9 @@
+import 'package:construction_procurement_app/Models/Requistion.dart';
+import 'package:construction_procurement_app/Providers/RequisitionProvider.dart';
+import 'package:construction_procurement_app/Screens/RequisitionDetails.dart';
 import 'package:construction_procurement_app/Widgets/RaisedGredientBtn.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class PurchaseRequisition extends StatefulWidget {
   @override
@@ -7,6 +11,13 @@ class PurchaseRequisition extends StatefulWidget {
 }
 
 class _PurchaseRequisitionState extends State<PurchaseRequisition> {
+  final reqNoController = TextEditingController();
+  final dateController = TextEditingController();
+  final qtyController = TextEditingController();
+  final descController = TextEditingController();
+  final priceController = TextEditingController();
+  final locationController = TextEditingController();
+
   @override
   void initState() {
     super.initState();
@@ -15,12 +26,21 @@ class _PurchaseRequisitionState extends State<PurchaseRequisition> {
   @override
   void dispose() {
     super.dispose();
+    dateController.dispose();
+    reqNoController.dispose();
+    qtyController.dispose();
+    descController.dispose();
+    priceController.dispose();
+    locationController.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
+
+    final reqProvider = Provider.of<RequisitionProvider>(context);
+
     return Stack(children: <Widget>[
       Image.asset(
         "Assets/bg.jpg",
@@ -39,31 +59,37 @@ class _PurchaseRequisitionState extends State<PurchaseRequisition> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Container(
-                height: 50,
-                margin: EdgeInsets.only(
-                  top: 30,
-                  left: 25,
-                  right: 25,
+              if (reqProvider.reqNo == null)
+                Container(
+                  height: 50,
+                  margin: EdgeInsets.only(
+                    top: 30,
+                    left: 25,
+                    right: 25,
+                  ),
+                  child: TextField(
+                    controller: reqNoController,
+                    // onChanged: (value) => reqProvider.changeReqNo(value),
+                    decoration: new InputDecoration(
+                        hintText: "Requsition No", fillColor: Colors.white),
+                  ),
                 ),
-                child: TextField(
-                  decoration: new InputDecoration(
-                      hintText: "Requsition No", fillColor: Colors.white),
+              if (reqProvider.reqNo == null)
+                Container(
+                  height: 50,
+                  margin: EdgeInsets.only(
+                    top: 10,
+                    left: 25,
+                    right: 25,
+                  ),
+                  child: TextField(
+                    controller: dateController,
+                    keyboardType: TextInputType.datetime,
+                    // onChanged: (value) => reqProvider.changeDate(value),
+                    decoration: new InputDecoration(
+                        hintText: "Dilivery Date", fillColor: Colors.white),
+                  ),
                 ),
-              ),
-              Container(
-                height: 50,
-                margin: EdgeInsets.only(
-                  top: 10,
-                  left: 25,
-                  right: 25,
-                ),
-                child: TextField(
-                  keyboardType: TextInputType.datetime,
-                  decoration: new InputDecoration(
-                      hintText: "Dilivery Date", fillColor: Colors.white),
-                ),
-              ),
               Container(
                 margin: EdgeInsets.all(15),
                 width: double.infinity,
@@ -89,6 +115,8 @@ class _PurchaseRequisitionState extends State<PurchaseRequisition> {
                     SizedBox(
                       height: 50,
                       child: TextField(
+                        onChanged: (value) => reqProvider.changeQty(value),
+                        controller: qtyController,
                         keyboardType: TextInputType.number,
                         decoration: new InputDecoration(
                           hintText: "Quantity",
@@ -99,6 +127,9 @@ class _PurchaseRequisitionState extends State<PurchaseRequisition> {
                     SizedBox(
                       height: 100,
                       child: TextField(
+                        onChanged: (value) =>
+                            reqProvider.changeDescription(value),
+                        controller: descController,
                         keyboardType: TextInputType.multiline,
                         maxLines: 3,
                         minLines: 3,
@@ -111,6 +142,8 @@ class _PurchaseRequisitionState extends State<PurchaseRequisition> {
                     SizedBox(
                       height: 50,
                       child: TextField(
+                        controller: priceController,
+                        onChanged: (value) => reqProvider.changePrice(value),
                         keyboardType: TextInputType.number,
                         decoration: new InputDecoration(
                           hintText: "Unit Price",
@@ -121,6 +154,8 @@ class _PurchaseRequisitionState extends State<PurchaseRequisition> {
                     SizedBox(
                       height: 50,
                       child: TextField(
+                        onChanged: (value) => reqProvider.changeLocation(value),
+                        controller: locationController,
                         decoration: new InputDecoration(
                           hintText: "Location",
                         ),
@@ -134,8 +169,18 @@ class _PurchaseRequisitionState extends State<PurchaseRequisition> {
                               color: Colors.white, fontWeight: FontWeight.bold),
                         ),
                         onPressed: () {
-                          print('button clicked');
-                        }),
+                          reqProvider.saveProduct();
+                          if (reqProvider.reqNo == null) {
+                            reqProvider.changeReqNo(reqNoController.text);
+                            reqProvider.changeDate(dateController.text);
+                          }
+
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => RequsitionDetails()),
+                          );
+                        })
                   ],
                 ),
               ),
