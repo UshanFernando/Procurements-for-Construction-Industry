@@ -39,16 +39,15 @@ class _HomeScreenState extends State<HomeScreen> {
           // Center is a layout widget. It takes a single child and positions it
           // in the middle of the parent.
           child: Container(
+            margin: EdgeInsets.all(15),
             height: height * 0.5,
             width: double.infinity,
             padding: EdgeInsets.all(25),
             decoration: BoxDecoration(
               color: Colors.white54,
-              borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(10),
-                  topRight: Radius.circular(10),
-                  bottomLeft: Radius.circular(10),
-                  bottomRight: Radius.circular(10)),
+              borderRadius: BorderRadius.all(
+                Radius.circular(20),
+              ),
               boxShadow: [
                 BoxShadow(
                   color: Colors.black.withOpacity(0.5),
