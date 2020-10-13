@@ -1,5 +1,6 @@
 import 'package:construction_procurement_app/Providers/RequisitionProvider.dart';
 import 'package:construction_procurement_app/Screens/PurchaseRequisition.dart';
+import 'package:construction_procurement_app/Screens/RequsitionsList.dart';
 import 'package:construction_procurement_app/Services/FirestoreService.dart';
 import 'package:construction_procurement_app/Widgets/RaisedGredientBtn.dart';
 import 'package:flutter/material.dart';
@@ -25,9 +26,8 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
-    
-    return
-          Stack(children: <Widget>[
+
+    return Stack(children: <Widget>[
       Image.asset(
         "Assets/bg.jpg",
         height: MediaQuery.of(context).size.height,
@@ -100,7 +100,11 @@ class _HomeScreenState extends State<HomeScreen> {
                       colors: <Color>[Colors.red, Colors.orange[700]],
                     ),
                     onPressed: () {
-                      print('button clicked');
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => RequsitionsList()),
+                      );
                     }),
                 SizedBox(
                   height: 10,
@@ -112,7 +116,11 @@ class _HomeScreenState extends State<HomeScreen> {
                           color: Colors.white, fontWeight: FontWeight.bold),
                     ),
                     onPressed: () {
-                      print('button clicked');
+                      // Navigator.push(
+                      //   context,
+                      //   MaterialPageRoute(
+                      //       builder: (context) => RequsitionsList()),
+                      // );
                     }),
               ],
             ),
