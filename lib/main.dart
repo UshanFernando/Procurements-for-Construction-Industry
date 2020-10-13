@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'Providers/RequisitionProvider.dart';
+import 'Screens/PurchaseRequisition.dart';
+import 'Screens/RequisitionDetails.dart';
 import 'Services/FirestoreService.dart';
 
 void main() {
@@ -36,7 +38,7 @@ class MyApp extends StatelessWidget {
               fillColor: Colors.white70,
             ),
           ),
-          home: HomeScreen(),
+          home: RequsitionDetails(),
         ));
   }
 }
