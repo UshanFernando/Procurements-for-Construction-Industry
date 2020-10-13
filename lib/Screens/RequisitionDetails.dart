@@ -50,11 +50,35 @@ class _RequsitionDetailsState extends State<RequsitionDetails> {
           margin: EdgeInsets.all(12),
           padding: EdgeInsets.all(8),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               Container(
                   padding: EdgeInsets.all(8),
                   color: Colors.white,
-                  child: createTable(reqProvider.products)),
+                  child: createTable(reqProvider.products, reqProvider.total)),
+              if (reqProvider.total != 0)
+                Container(
+                  width: 200,
+                  padding: EdgeInsets.all(8),
+                  color: Colors.white,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Text("Total",
+                          style: TextStyle(
+                              fontSize: 16, fontWeight: FontWeight.bold)),
+                      SizedBox(
+                        width: 45,
+                      ),
+                      Text(reqProvider.total.toString(),
+                          style: TextStyle(
+                              fontSize: 16, fontWeight: FontWeight.bold)),
+                      SizedBox(
+                        width: 47,
+                      ),
+                    ],
+                  ),
+                ),
               SizedBox(
                 height: 25,
               ),
@@ -80,7 +104,9 @@ class _RequsitionDetailsState extends State<RequsitionDetails> {
                   gradient: LinearGradient(
                     colors: <Color>[Colors.red, Colors.orange[700]],
                   ),
-                  onPressed: () {}),
+                  onPressed: () {
+                    reqProvider.calcToatal();
+                  }),
               SizedBox(
                 height: 10,
               ),
@@ -108,12 +134,10 @@ class _RequsitionDetailsState extends State<RequsitionDetails> {
                   ),
                   onPressed: () {
                     reqProvider.sendRequsition();
-                   Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => HomeScreen()),
-                  );
-             
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => HomeScreen()),
+                    );
                   }),
             ],
           ),
@@ -122,7 +146,7 @@ class _RequsitionDetailsState extends State<RequsitionDetails> {
     ]);
   }
 
-  Widget createTable(List<Product> products) {
+  Widget createTable(List<Product> products, double totPrice) {
     List<TableRow> rows = [];
     rows.add(TableRow(children: [
       Text("Quantity",
@@ -144,6 +168,7 @@ class _RequsitionDetailsState extends State<RequsitionDetails> {
         Text((p.price * p.qty).toString())
       ]));
     }
+
     return Table(
       children: rows,
       border: TableBorder.all(width: 1),

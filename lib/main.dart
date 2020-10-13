@@ -19,7 +19,7 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
         providers: [
           ChangeNotifierProvider(create: (context) => RequisitionProvider()),
-          StreamProvider(create: (context) => firestoreService.getProducts()),
+          StreamProvider(create: (context) => firestoreService.getRequsitions()),
         ],
         child: MaterialApp(
           title: 'Flutter Demo',

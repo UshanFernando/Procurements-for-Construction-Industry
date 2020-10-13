@@ -6,20 +6,25 @@ class Requisition {
   double totPrice;
   List<Product> products;
   // final double qty;
-  // final String location;
+  String location;
 
-  Requisition({this.reqNo, this.date,this.products});
+  Requisition(
+      {this.reqNo, this.date, this.products, this.totPrice, this.location});
 
   Map<String, dynamic> toMap() {
     return {
       'reqNo': reqNo,
       'date': date,
-      'products': products.map((i) => i.toMap()).toList(),  
+      'total': totPrice,
+      'products': products.map((i) => i.toMap()).toList(),
+      'location': location
     };
   }
 
   Requisition.fromFirestore(Map<String, dynamic> firestore)
       : reqNo = firestore['reqNo'],
         date = firestore['date'],
-        products = firestore['products'];
+        products = firestore['products'],
+        location = firestore['location'],
+        totPrice = firestore['total'];
 }

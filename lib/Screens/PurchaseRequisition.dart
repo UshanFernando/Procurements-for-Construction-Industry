@@ -74,7 +74,7 @@ class _PurchaseRequisitionState extends State<PurchaseRequisition> {
                         hintText: "Requsition No", fillColor: Colors.white),
                   ),
                 ),
-              if (reqProvider.reqNo == null)
+              if (reqProvider.date == null)
                 Container(
                   height: 50,
                   margin: EdgeInsets.only(
@@ -88,6 +88,21 @@ class _PurchaseRequisitionState extends State<PurchaseRequisition> {
                     // onChanged: (value) => reqProvider.changeDate(value),
                     decoration: new InputDecoration(
                         hintText: "Dilivery Date", fillColor: Colors.white),
+                  ),
+                ),
+              if (reqProvider.location == null)
+                Container(
+                  height: 50,
+                  margin: EdgeInsets.only(
+                    top: 10,
+                    left: 25,
+                    right: 25,
+                  ),
+                  child: TextField(
+                    // onChanged: (value) => reqProvider.changeLocation(value),
+                    controller: locationController,
+                    decoration: new InputDecoration(
+                        hintText: "Location", fillColor: Colors.white),
                   ),
                 ),
               Container(
@@ -150,18 +165,7 @@ class _PurchaseRequisitionState extends State<PurchaseRequisition> {
                         ),
                       ),
                     ),
-                    SizedBox(height: 10),
-                    SizedBox(
-                      height: 50,
-                      child: TextField(
-                        onChanged: (value) => reqProvider.changeLocation(value),
-                        controller: locationController,
-                        decoration: new InputDecoration(
-                          hintText: "Location",
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: 10),
+                    SizedBox(height: 20),
                     RaisedGradientButton(
                         child: Text(
                           'Submit',
@@ -173,6 +177,7 @@ class _PurchaseRequisitionState extends State<PurchaseRequisition> {
                           if (reqProvider.reqNo == null) {
                             reqProvider.changeReqNo(reqNoController.text);
                             reqProvider.changeDate(dateController.text);
+                            reqProvider.changeLocation(locationController.text);
                           }
 
                           Navigator.push(
