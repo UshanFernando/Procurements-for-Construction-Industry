@@ -1,3 +1,4 @@
+import 'package:construction_procurement_app/Screens/PurchaseRequisition.dart';
 import 'package:construction_procurement_app/Widgets/RaisedGredientBtn.dart';
 import 'package:flutter/material.dart';
 
@@ -73,7 +74,11 @@ class _HomeScreenState extends State<HomeScreen> {
                       colors: <Color>[Colors.red, Colors.orange[700]],
                     ),
                     onPressed: () {
-                      print('button clicked');
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => PurchaseRequisition()),
+                      );
                     }),
                 SizedBox(
                   height: 10,
@@ -100,9 +105,6 @@ class _HomeScreenState extends State<HomeScreen> {
                       'View Purchase Order',
                       style: TextStyle(
                           color: Colors.white, fontWeight: FontWeight.bold),
-                    ),
-                    gradient: LinearGradient(
-                      colors: <Color>[Colors.red, Colors.orange[700]],
                     ),
                     onPressed: () {
                       print('button clicked');

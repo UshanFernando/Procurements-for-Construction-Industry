@@ -14,6 +14,17 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.red,
         visualDensity: VisualDensity.adaptivePlatformDensity,
+        inputDecorationTheme: InputDecorationTheme(
+          border: OutlineInputBorder(
+            // width: 0.0 produces a thin "hairline" border
+            borderRadius: BorderRadius.all(Radius.circular(20.0)),
+            borderSide: BorderSide.none,
+            //borderSide: const BorderSide(),
+          ),
+          hintStyle: TextStyle(color: Colors.blueGrey),
+          filled: true,
+          fillColor: Colors.white70,
+        ),
       ),
       home: HomeScreen(),
     );
