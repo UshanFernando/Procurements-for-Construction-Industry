@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:construction_procurement_app/Models/SupplierQuotation.dart';
 import 'package:construction_procurement_app/Screens/HomeScreen.dart';
+import 'package:construction_procurement_app/Screens/SupplierList.dart';
 import 'package:construction_procurement_app/Screens/Login.dart';
 import 'package:construction_procurement_app/Screens/PurchaseOrder.dart';
 import 'package:flutter/material.dart';

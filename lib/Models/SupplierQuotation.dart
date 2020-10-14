@@ -14,10 +14,13 @@ class SupplierQuotation {
 
   SupplierQuotation.fromFirestore(Map<String, dynamic> firestore)
       : details = firestore['details'],
-        //supplier.suplierName = firestore['supplier'],
+        supplier = Supplier(
+            supplierName: firestore['supplier']['supplierName'].toString()),
         product = Product(
           desc: firestore['product']['desc'].toString(),
           price: double.parse(firestore['product']['price'].toString()),
+        ),
+        requisition = Requisition(
+          reqNo: firestore['requisition']['reqNo'].toString(),
         );
-  // requisition = firestore['requisition'];
 }

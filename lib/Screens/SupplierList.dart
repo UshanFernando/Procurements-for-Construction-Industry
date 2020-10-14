@@ -25,8 +25,8 @@ class _SupplierListState extends State<SupplierList> {
   @override
   Widget build(BuildContext context) {
     //final reqSupProvider = Provider.of<SupplierProvider>(context);
-    final supQuotation = Provider.of<List<SupplierQuotation>>(context);
-    print(supQuotation);
+    final supQuotations = Provider.of<List<SupplierQuotation>>(context);
+
     return Stack(children: <Widget>[
       Image.asset(
         "Assets/bg.jpg",
@@ -75,7 +75,7 @@ class _SupplierListState extends State<SupplierList> {
               Container(
                   padding: EdgeInsets.all(8),
                   color: Colors.white,
-                  child: createTable(supQuotation)),
+                  child: createTable(supQuotations)),
               Container(
                 margin: EdgeInsets.only(
                   top: 30,
@@ -112,8 +112,9 @@ class _SupplierListState extends State<SupplierList> {
     ;
   }
 
-  bool _val = false;
-  Widget createTable(List<SupplierQuotation> products) {
+  List<bool> checked = new List();
+  List<SupplierQuotation> supplierQuotation = new List();
+  Widget createTable(List<SupplierQuotation> supQuotations) {
     List<TableRow> rows = [];
     rows.add(TableRow(children: [
       // Text("Name", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
@@ -142,24 +143,37 @@ class _SupplierListState extends State<SupplierList> {
     //     activeColor: Color(0xFF6200EE),
     //   )
     // ]));
-
-    for (SupplierQuotation p in products) {
+    for (var i = 0; i < supQuotations.length; i++) {
+      checked.add(false);
+    }
+    for (var i = 0; i < supQuotations.length; i++) {
       rows.add(TableRow(children: [
         // Text(
         //   p.supplier.suplierName.toString(),
         // ),
-        Text(p.details.toString()),
-        p.product != null
-            ? Text(p.product.desc.toString())
+        Text(supQuotations[i].details.toString()),
+        supQuotations[i].product != null
+            ? Text(supQuotations[i].product.desc.toString())
             : Text('N/A'),
-        Text(p.product.price.toString()),
+        Text(supQuotations[i].product.price.toString()),
         Checkbox(
           onChanged: (bool value) {
             setState(() {
-              //checked= value;
+              checked[i] = value;
             });
+            if (value == true) {
+              setState(() {
+                supplierQuotation.add(supQuotations[i]);
+              });
+            } else if (value == false) {
+              if (supplierQuotation.contains(supQuotations[i])) {
+                setState(() {
+                  supplierQuotation.remove(supQuotations[i]);
+                });
+              }
+            }
           },
-          value: true,
+          value: checked[i],
           activeColor: Color(0xFF6200EE),
         )
       ]));
