@@ -1,10 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:construction_procurement_app/Screens/HomeScreen.dart';
-<<<<<<< HEAD
 import 'package:construction_procurement_app/Screens/SupplierList.dart';
-=======
 import 'package:construction_procurement_app/Screens/Login.dart';
->>>>>>> c92b802a7559fcba032a2c69532e3aa0889d6867
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -51,11 +48,7 @@ class MyApp extends StatelessWidget {
               fillColor: Colors.white70,
             ),
           ),
-<<<<<<< HEAD
           home: SupplierList(),
-=======
-          home: Login(),
->>>>>>> c92b802a7559fcba032a2c69532e3aa0889d6867
         ));
   }
 }
