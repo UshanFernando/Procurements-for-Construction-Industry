@@ -108,7 +108,7 @@ class _RequsitionsListState extends State<RequsitionsList> {
         Text('Approved')
       ]));
     }
-
+    print(products);
     return Table(
       children: rows,
       border: TableBorder.all(width: 1),
