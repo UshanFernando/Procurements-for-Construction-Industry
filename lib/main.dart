@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:construction_procurement_app/Screens/HomeScreen.dart';
+import 'package:construction_procurement_app/Screens/Login.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -17,7 +18,8 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
         providers: [
           ChangeNotifierProvider(create: (context) => RequisitionProvider()),
-          StreamProvider(create: (context) => firestoreService.getRequsitions()),
+          StreamProvider(
+              create: (context) => firestoreService.getRequsitions()),
         ],
         child: MaterialApp(
           title: 'Flutter Demo',
@@ -36,7 +38,7 @@ class MyApp extends StatelessWidget {
               fillColor: Colors.white70,
             ),
           ),
-          home: HomeScreen(),
+          home: Login(),
         ));
   }
 }

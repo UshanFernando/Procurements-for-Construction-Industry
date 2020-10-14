@@ -22,9 +22,9 @@ class Requisition {
   }
 
   Requisition.fromFirestore(Map<String, dynamic> firestore)
-      : reqNo = firestore['reqNo']??'N/A',
-        date = firestore['date']??'N/A',
+      : reqNo = firestore['reqNo'] ?? 'N/A',
+        date = firestore['date'] ?? 'N/A',
         // products = firestore['products'],
-        location = firestore['location']??'N/A',
-        totPrice = firestore['total']??'N/A';
+        location = firestore['location'] ?? 'N/A',
+        totPrice = firestore['total'] ?? 'N/A';
 }
