@@ -158,7 +158,7 @@ class _LoginPageState extends State<LoginPage> {
               shrinkWrap: true,
               padding: EdgeInsets.only(left: 25, right: 25),
               children: <Widget>[
-                // getImageAsset(),
+                getImageAsset(),
                 SizedBox(
                   height: 20.0,
                 ),
@@ -219,16 +219,16 @@ class _LoginPageState extends State<LoginPage> {
     ]);
   }
 
-  // Widget getImageAsset() {
-  //   AssetImage assImg = AssetImage('images/slicn.jpg');
-  //   Image img = Image(
-  //     image: assImg,
-  //     width: 80.0,
-  //     height: 80.0,
-  //   );
-  //   return Container(
-  //     margin: EdgeInsets.only(top: 10.0, bottom: 20.0),
-  //     child: img,
-  //   );
-  // }
+  Widget getImageAsset() {
+    AssetImage assImg = AssetImage('Assets/avt.png');
+    Image img = Image(
+      image: assImg,
+      width: 80.0,
+      height: 80.0,
+    );
+    return Container(
+      margin: EdgeInsets.only(top: 10.0, bottom: 20.0),
+      child: img,
+    );
+  }
 }

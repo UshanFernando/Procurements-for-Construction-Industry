@@ -1,5 +1,9 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:construction_procurement_app/Models/Requistion.dart';
+import 'package:construction_procurement_app/Models/SupplierQuotation.dart';
+import 'package:flutter/material.dart';
 
 class FirestoreService {
   Firestore _db = Firestore.instance;
@@ -23,6 +27,14 @@ class FirestoreService {
         .toList());
   }
 
+  Stream<List<SupplierQuotation>> getSupplierQuatations() {
+    var object = _db.collection('supplierQuotation').snapshots().map(
+        (snapshot) => snapshot.documents
+            .map((document) => SupplierQuotation.fromFirestore(document.data))
+            .toList());
+    debugPrint(object.toString());
+    return object;
+  }
   // Future<void> removeProduct(String productId){
   //   return _db.collection('products').document(productId).delete();
   // }

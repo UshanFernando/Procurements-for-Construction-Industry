@@ -5,6 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'Providers/RequisitionProvider.dart';
+import 'Providers/SupplierProvider.dart';
+import 'Screens/PurchaseRequisition.dart';
+import 'Screens/RequisitionDetails.dart';
 import 'Services/FirestoreService.dart';
 
 void main() {
@@ -18,10 +21,16 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
         providers: [
           ChangeNotifierProvider(create: (context) => RequisitionProvider()),
+          // ChangeNotifierProvider(create: (context) => SupplierProvider()),
+          StreamProvider(
+              create: (context) => firestoreService.getRequsitions()),
+          StreamProvider(
+              create: (context) => firestoreService.getSupplierQuatations()),
           StreamProvider(
               create: (context) => firestoreService.getRequsitions()),
         ],
         child: MaterialApp(
+          debugShowCheckedModeBanner: false,
           title: 'Flutter Demo',
           theme: ThemeData(
             primarySwatch: Colors.red,
@@ -38,7 +47,15 @@ class MyApp extends StatelessWidget {
               fillColor: Colors.white70,
             ),
           ),
+<<<<<<< HEAD
           home: HomeScreen(),
+=======
+<<<<<<< HEAD
+          home: SupplierList(),
+=======
+          home: Login(),
+>>>>>>> c92b802a7559fcba032a2c69532e3aa0889d6867
+>>>>>>> fab4f4e094571ffb8ff350e212f77659a5bcb789
         ));
   }
 }
