@@ -1,5 +1,8 @@
 class Supplier {
-  String suplierName;
+  String supplierName;
 
-  Supplier(this.suplierName);
+  Supplier({this.supplierName});
+
+  // Supplier.fromFirestore(Map<String, dynamic> firestore)
+  //     : supplierName = firestore['supplierName'] ?? 'N/A';
 }
