@@ -1,6 +1,13 @@
+import 'package:construction_procurement_app/Models/Product.dart';
+import 'package:construction_procurement_app/Models/Requistion.dart';
+import 'package:construction_procurement_app/Models/SupplierQuotation.dart';
 import 'package:construction_procurement_app/Providers/RequisitionProvider.dart';
+import 'package:construction_procurement_app/Providers/SupplierProvider.dart';
+import 'package:construction_procurement_app/Widgets/RaisedGredientBtn.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
+import 'RequisitionDetails.dart';
 
 class SupplierList extends StatefulWidget {
   @override
@@ -15,9 +22,11 @@ class _SupplierListState extends State<SupplierList> {
   final priceController = TextEditingController();
   final locationController = TextEditingController();
 
-  final reqProvider = Provider.of<RequisitionProvider>(context);
   @override
   Widget build(BuildContext context) {
+    //final reqSupProvider = Provider.of<SupplierProvider>(context);
+    final supQuotation = Provider.of<List<SupplierQuotation>>(context);
+    print(supQuotation);
     return Stack(children: <Widget>[
       Image.asset(
         "Assets/bg.jpg",
@@ -36,130 +45,63 @@ class _SupplierListState extends State<SupplierList> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              if (reqProvider.reqNo == null)
-                Container(
-                  height: 50,
-                  margin: EdgeInsets.only(
-                    top: 30,
-                    left: 25,
-                    right: 25,
-                  ),
-                  child: TextField(
-                    controller: reqNoController,
-                    // onChanged: (value) => reqProvider.changeReqNo(value),
-                    decoration: new InputDecoration(
-                        hintText: "Requsition No", fillColor: Colors.white),
-                  ),
-                ),
-              if (reqProvider.reqNo == null)
-                Container(
-                  height: 50,
-                  margin: EdgeInsets.only(
-                    top: 10,
-                    left: 25,
-                    right: 25,
-                  ),
-                  child: TextField(
-                    controller: dateController,
-                    keyboardType: TextInputType.datetime,
-                    // onChanged: (value) => reqProvider.changeDate(value),
-                    decoration: new InputDecoration(
-                        hintText: "Dilivery Date", fillColor: Colors.white),
-                  ),
-                ),
               Container(
-                margin: EdgeInsets.all(15),
-                width: double.infinity,
-                padding: EdgeInsets.all(25),
-                decoration: BoxDecoration(
-                  color: Colors.white54,
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(20),
-                  ),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.5),
-                      spreadRadius: 5,
-                      blurRadius: 7,
-                      offset: Offset(0, 3), // changes position of shadow
-                    ),
-                  ],
+                margin: EdgeInsets.only(
+                  top: 30,
+                  left: 200,
+                  right: 25,
+                  bottom: 20,
                 ),
-                child: Column(
-                  mainAxisSize: MainAxisSize.max,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    SizedBox(
-                      height: 50,
-                      child: TextField(
-                        onChanged: (value) => reqProvider.changeQty(value),
-                        controller: qtyController,
-                        keyboardType: TextInputType.number,
-                        decoration: new InputDecoration(
-                          hintText: "Quantity",
-                        ),
-                      ),
+                child: RaisedGradientButton(
+                    child: Text(
+                      'Categorize',
+                      style: TextStyle(
+                          color: Colors.white, fontWeight: FontWeight.bold),
                     ),
-                    SizedBox(height: 10),
-                    SizedBox(
-                      height: 100,
-                      child: TextField(
-                        onChanged: (value) =>
-                            reqProvider.changeDescription(value),
-                        controller: descController,
-                        keyboardType: TextInputType.multiline,
-                        maxLines: 3,
-                        minLines: 3,
-                        decoration: new InputDecoration(
-                          hintText: "Description",
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: 10),
-                    SizedBox(
-                      height: 50,
-                      child: TextField(
-                        controller: priceController,
-                        onChanged: (value) => reqProvider.changePrice(value),
-                        keyboardType: TextInputType.number,
-                        decoration: new InputDecoration(
-                          hintText: "Unit Price",
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: 10),
-                    SizedBox(
-                      height: 50,
-                      child: TextField(
-                        onChanged: (value) => reqProvider.changeLocation(value),
-                        controller: locationController,
-                        decoration: new InputDecoration(
-                          hintText: "Location",
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: 10),
-                    RaisedGradientButton(
-                        child: Text(
-                          'Submit',
-                          style: TextStyle(
-                              color: Colors.white, fontWeight: FontWeight.bold),
-                        ),
-                        onPressed: () {
-                          reqProvider.saveProduct();
-                          if (reqProvider.reqNo == null) {
-                            reqProvider.changeReqNo(reqNoController.text);
-                            reqProvider.changeDate(dateController.text);
-                          }
+                    onPressed: () {
+                      // reqProvider.saveProduct();
+                      // if (reqProvider.reqNo == null) {
+                      //   reqProvider.changeReqNo(reqNoController.text);
+                      //   reqProvider.changeDate(dateController.text);
+                      // }
 
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => RequsitionDetails()),
-                          );
-                        })
-                  ],
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => RequsitionDetails()),
+                      );
+                    }),
+              ),
+              Container(
+                  padding: EdgeInsets.all(8),
+                  color: Colors.white,
+                  child: createTable(supQuotation)),
+              Container(
+                margin: EdgeInsets.only(
+                  top: 30,
+                  left: 200,
+                  right: 25,
+                  bottom: 20,
                 ),
+                child: RaisedGradientButton(
+                    child: Text(
+                      'Add details to Order',
+                      style: TextStyle(
+                          color: Colors.white, fontWeight: FontWeight.bold),
+                    ),
+                    onPressed: () {
+                      // reqProvider.saveProduct();
+                      // if (reqProvider.reqNo == null) {
+                      //   reqProvider.changeReqNo(reqNoController.text);
+                      //   reqProvider.changeDate(dateController.text);
+                      // }
+
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => RequsitionDetails()),
+                      );
+                    }),
               ),
             ],
           ),
@@ -168,5 +110,62 @@ class _SupplierListState extends State<SupplierList> {
       )
     ]);
     ;
+  }
+
+  bool _val = false;
+  Widget createTable(List<SupplierQuotation> products) {
+    List<TableRow> rows = [];
+    rows.add(TableRow(children: [
+      // Text("Name", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+      Text("Detail",
+          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+      Text("Item", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+      // Text("Price",
+      //     style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+      Text("Check", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold))
+    ]));
+
+    // rows.add(TableRow(children: [
+    //   Text(
+    //     "dfg",
+    //   ),
+    //   Text("dfg fgggggggggggggggggggggggggggggggggggggggggg"),
+    //   Text("dfg"),
+    //   Text("dfg"),
+    //   Checkbox(
+    //     onChanged: (bool value) {
+    //       setState(() {
+    //         _val = value;
+    //       });
+    //     },
+    //     value: _val,
+    //     activeColor: Color(0xFF6200EE),
+    //   )
+    // ]));
+
+    for (SupplierQuotation p in products) {
+      rows.add(TableRow(children: [
+        // Text(
+        //   p.supplier.suplierName.toString(),
+        // ),
+        Text(p.details.toString()),
+        Text(p.product.desc.toString()),
+        // Text(p.product.price.toString()),
+        Checkbox(
+          onChanged: (bool value) {
+            setState(() {
+              //checked= value;
+            });
+          },
+          value: true,
+          activeColor: Color(0xFF6200EE),
+        )
+      ]));
+    }
+
+    return Table(
+      children: rows,
+      border: TableBorder.all(width: 1),
+    );
   }
 }
