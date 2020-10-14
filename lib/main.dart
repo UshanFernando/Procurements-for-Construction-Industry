@@ -22,6 +22,7 @@ class MyApp extends StatelessWidget {
               create: (context) => firestoreService.getRequsitions()),
         ],
         child: MaterialApp(
+          debugShowCheckedModeBanner: false,
           title: 'Flutter Demo',
           theme: ThemeData(
             primarySwatch: Colors.red,
