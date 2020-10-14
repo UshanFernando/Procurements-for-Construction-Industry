@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:construction_procurement_app/Models/SupplierQuotation.dart';
 import 'package:construction_procurement_app/Screens/HomeScreen.dart';
 import 'package:construction_procurement_app/Screens/SupplierList.dart';
 import 'package:construction_procurement_app/Screens/Login.dart';
@@ -9,6 +10,7 @@ import 'Providers/RequisitionProvider.dart';
 import 'Providers/SupplierProvider.dart';
 import 'Screens/PurchaseRequisition.dart';
 import 'Screens/RequisitionDetails.dart';
+import 'Screens/SupplierList.dart';
 import 'Services/FirestoreService.dart';
 
 void main() {
@@ -27,8 +29,6 @@ class MyApp extends StatelessWidget {
               create: (context) => firestoreService.getRequsitions()),
           StreamProvider(
               create: (context) => firestoreService.getSupplierQuatations()),
-          StreamProvider(
-              create: (context) => firestoreService.getRequsitions()),
         ],
         child: MaterialApp(
           debugShowCheckedModeBanner: false,

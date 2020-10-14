@@ -11,7 +11,7 @@ class Product {
   }
 
   Product.fromFirestore(Map<String, dynamic> firestore)
-      : desc = firestore['name'],
-        price = firestore['price'],
-        qty = firestore['qty'];
+      : desc = firestore['name']??'N/A',
+        price = firestore['price']??'N/A',
+        qty = firestore['qty']??'N/A';
 }

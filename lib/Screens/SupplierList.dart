@@ -120,8 +120,8 @@ class _SupplierListState extends State<SupplierList> {
       Text("Detail",
           style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
       Text("Item", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-      // Text("Price",
-      //     style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+      Text("Price",
+          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
       Text("Check", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold))
     ]));
 
@@ -149,8 +149,10 @@ class _SupplierListState extends State<SupplierList> {
         //   p.supplier.suplierName.toString(),
         // ),
         Text(p.details.toString()),
-        Text(p.product.desc.toString()),
-        // Text(p.product.price.toString()),
+        p.product != null
+            ? Text(p.product.desc.toString())
+            : Text('N/A'),
+        Text(p.product.price.toString()),
         Checkbox(
           onChanged: (bool value) {
             setState(() {

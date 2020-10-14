@@ -15,6 +15,9 @@ class SupplierQuotation {
   SupplierQuotation.fromFirestore(Map<String, dynamic> firestore)
       : details = firestore['details'],
         //supplier.suplierName = firestore['supplier'],
-        product = firestore['product'].desc,
-        requisition = firestore['requisition'];
+        product = Product(
+          desc: firestore['product']['desc'].toString(),
+          price: double.parse(firestore['product']['price'].toString()),
+        );
+  // requisition = firestore['requisition'];
 }

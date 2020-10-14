@@ -28,11 +28,15 @@ class FirestoreService {
   }
 
   Stream<List<SupplierQuotation>> getSupplierQuatations() {
-    var object = _db.collection('supplierQuotation').snapshots().map(
-        (snapshot) => snapshot.documents
-            .map((document) => SupplierQuotation.fromFirestore(document.data))
+    var object = _db
+        .collection('supplierQuotation')
+        .snapshots()
+        .map((snapshot) => snapshot.documents
+            .map(
+              (document) => SupplierQuotation.fromFirestore(document.data),
+            )
             .toList());
-    debugPrint(object.toString());
+
     return object;
   }
   // Future<void> removeProduct(String productId){
