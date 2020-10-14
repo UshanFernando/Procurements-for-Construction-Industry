@@ -14,6 +14,8 @@ class RequsitionDetails extends StatefulWidget {
 }
 
 class _RequsitionDetailsState extends State<RequsitionDetails> {
+  final startDateController = TextEditingController();
+  final endDateController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     final reqProvider = Provider.of<RequisitionProvider>(context);

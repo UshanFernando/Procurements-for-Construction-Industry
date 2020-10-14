@@ -15,6 +15,8 @@ class RequisitionProvider with ChangeNotifier {
   double _price;
   String _location;
 
+  List<Requisition> _reqs;
+
   //Getters
   String get date => _date;
   String get reqNo => _reqNo;
@@ -25,7 +27,7 @@ class RequisitionProvider with ChangeNotifier {
   String get desc => _desc;
   double get price => _price;
   String get location => _location;
-
+  List<Requisition> get reqs => _reqs;
   //Setters
 
   changeReqNo(String value) {
@@ -116,5 +118,9 @@ class RequisitionProvider with ChangeNotifier {
   }
   // removeProduct(String productId) {
   //   firestoreService.removeProduct(productId);
+  // }
+
+  // Future<List<Requisition>> fetchProducts() async {
+  //   return await firestoreService.getRequsitions();
   // }
 }

@@ -20,6 +20,7 @@ class FirestoreService {
   }
 
   Stream<List<Requisition>> getRequsitions() {
+    print('get reqs called');
     return _db.collection('requisitions').snapshots().map((snapshot) => snapshot
         .documents
         .map((document) => Requisition.fromFirestore(document.data))
