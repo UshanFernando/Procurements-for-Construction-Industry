@@ -4,6 +4,7 @@ class Requisition {
   String reqNo;
   String date;
   double totPrice;
+  String status;
   List<Product> products;
   // final double qty;
   String location;
@@ -24,7 +25,7 @@ class Requisition {
   Requisition.fromFirestore(Map<String, dynamic> firestore)
       : reqNo = firestore['reqNo'] ?? 'N/A',
         date = firestore['date'] ?? 'N/A',
-        // products = firestore['products'],
+        status = firestore['status'] ?? 'Pending',
         location = firestore['location'] ?? 'N/A',
         totPrice = firestore['total'] ?? 'N/A';
 }
