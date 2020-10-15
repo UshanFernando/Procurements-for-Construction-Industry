@@ -5,6 +5,7 @@ import 'package:construction_procurement_app/Providers/DeliveryManagerProvider.d
 import 'package:construction_procurement_app/Screens/HomeScreen.dart';
 import 'package:construction_procurement_app/Screens/SupplierList.dart';
 import 'package:construction_procurement_app/Screens/Login.dart';
+import 'package:construction_procurement_app/Screens/PurchaseOrder.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -31,6 +32,7 @@ class MyApp extends StatelessWidget {
           ChangeNotifierProvider(create: (context) => RequisitionProvider()),
           ChangeNotifierProvider(
               create: (context) => DeliveryManagerProvider()),
+          ChangeNotifierProvider(create: (context) => SupplierProvider()),
           StreamProvider(
               create: (context) => firestoreService.getRequsitions()),
           StreamProvider(

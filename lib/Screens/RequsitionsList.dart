@@ -3,6 +3,7 @@ import 'package:construction_procurement_app/Models/Requistion.dart';
 import 'package:construction_procurement_app/Providers/RequisitionProvider.dart';
 import 'package:construction_procurement_app/Screens/HomeScreen.dart';
 import 'package:construction_procurement_app/Screens/PurchaseRequisition.dart';
+import 'package:construction_procurement_app/Screens/SupplierList.dart';
 import 'package:construction_procurement_app/Widgets/RaisedGredientBtn.dart';
 import 'package:flutter/material.dart';
 import 'package:horizontal_data_table/horizontal_data_table.dart';
@@ -272,7 +273,12 @@ class _RequsitionsListState extends State<RequsitionsList> {
           Container(
             child: IconButton(
               icon: Icon(Icons.add_circle),
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => SupplierList()),
+                );
+              },
             ),
             width: 50,
             height: 52,

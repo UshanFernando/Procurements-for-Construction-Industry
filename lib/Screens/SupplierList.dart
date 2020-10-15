@@ -3,6 +3,7 @@ import 'package:construction_procurement_app/Models/Requistion.dart';
 import 'package:construction_procurement_app/Models/SupplierQuotation.dart';
 import 'package:construction_procurement_app/Providers/RequisitionProvider.dart';
 import 'package:construction_procurement_app/Providers/SupplierProvider.dart';
+import 'package:construction_procurement_app/Screens/PurchaseOrder.dart';
 import 'package:construction_procurement_app/Widgets/RaisedGredientBtn.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -26,6 +27,7 @@ class _SupplierListState extends State<SupplierList> {
   Widget build(BuildContext context) {
     //final reqSupProvider = Provider.of<SupplierProvider>(context);
     final supQuotations = Provider.of<List<SupplierQuotation>>(context);
+    final supProvider = Provider.of<SupplierProvider>(context);
 
     return Stack(children: <Widget>[
       Image.asset(
@@ -75,7 +77,7 @@ class _SupplierListState extends State<SupplierList> {
               Container(
                   padding: EdgeInsets.all(8),
                   color: Colors.white,
-                  child: createTable(supQuotations)),
+                  child: createTable(supQuotations, supProvider)),
               Container(
                 margin: EdgeInsets.only(
                   top: 30,
@@ -99,7 +101,7 @@ class _SupplierListState extends State<SupplierList> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => RequsitionDetails()),
+                            builder: (context) => PurchaseOrder()),
                       );
                     }),
               ),
@@ -114,7 +116,8 @@ class _SupplierListState extends State<SupplierList> {
 
   List<bool> checked = new List();
   List<SupplierQuotation> supplierQuotation = new List();
-  Widget createTable(List<SupplierQuotation> supQuotations) {
+  Widget createTable(
+      List<SupplierQuotation> supQuotations, SupplierProvider supProvider) {
     List<TableRow> rows = [];
     rows.add(TableRow(children: [
       // Text("Name", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
@@ -161,17 +164,21 @@ class _SupplierListState extends State<SupplierList> {
             setState(() {
               checked[i] = value;
             });
-            if (value == true) {
-              setState(() {
-                supplierQuotation.add(supQuotations[i]);
-              });
-            } else if (value == false) {
-              if (supplierQuotation.contains(supQuotations[i])) {
-                setState(() {
-                  supplierQuotation.remove(supQuotations[i]);
-                });
-              }
-            }
+            // if (value == true) {
+            //   setState(() {
+            //     supplierQuotation.add(supQuotations[i]);
+            //   });
+            // } else if (value == false) {
+            //   if (supplierQuotation.contains(supQuotations[i])) {
+            //     setState(() {
+            //       supplierQuotation.remove(supQuotations[i]);
+            //     });
+            //   }
+            // }
+
+            value
+                ? supProvider.addSQ(supQuotations[i])
+                : supProvider.deleteSQ(supQuotations[i]);
           },
           value: checked[i],
           activeColor: Color(0xFF6200EE),
