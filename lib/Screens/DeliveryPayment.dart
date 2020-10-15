@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:construction_procurement_app/Widgets/RaisedGredientBtn.dart';
 import 'package:flutter/material.dart';
 
@@ -7,6 +9,7 @@ class DeliveryPayment extends StatefulWidget {
 }
 
 class _DeliveryPaymentState extends State<DeliveryPayment> {
+  File _imageFile;
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
@@ -91,17 +94,19 @@ class _DeliveryPaymentState extends State<DeliveryPayment> {
                         ),
                       ),
                     ),
-                    SizedBox(
-                      height: 100,
-                      child: TextField(
-                        //onChanged: (value) =>
-                        //   reqProvider.changeDescription(value),
-                        // controller: descController,
-                        keyboardType: TextInputType.multiline,
-                        maxLines: 3,
-                        minLines: 3,
-                        decoration: new InputDecoration(
-                          hintText: "Description",
+                    Container(
+                      height: height * (1.5 / 4),
+                      child: Expanded(
+                        child: Container(
+                          //height: double.infinity,
+                          margin: const EdgeInsets.only(
+                              left: 10.0, right: 10.0, top: 10.0),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(10.0),
+                            child: _imageFile != null
+                                ? Image.file(_imageFile)
+                                : Text("Add a photo"),
+                          ),
                         ),
                       ),
                     ),
