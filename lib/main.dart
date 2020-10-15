@@ -9,6 +9,9 @@ import 'package:provider/provider.dart';
 
 import 'Providers/RequisitionProvider.dart';
 import 'Providers/SupplierProvider.dart';
+import 'Screens/DeliveryPayment.dart';
+import 'Screens/DeliveryReconciliate.dart';
+import 'Screens/DeliveryValidate.dart';
 import 'Screens/PurchaseRequisition.dart';
 import 'Screens/RequisitionDetails.dart';
 import 'Screens/SupplierList.dart';
