@@ -25,7 +25,7 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
         providers: [
           ChangeNotifierProvider(create: (context) => RequisitionProvider()),
-          // ChangeNotifierProvider(create: (context) => SupplierProvider()),
+          ChangeNotifierProvider(create: (context) => SupplierProvider()),
           StreamProvider(
               create: (context) => firestoreService.getRequsitions()),
           StreamProvider(
@@ -49,7 +49,7 @@ class MyApp extends StatelessWidget {
               fillColor: Colors.white70,
             ),
           ),
-          home: PurchaseOrder(),
+          home: HomeScreen(),
         ));
   }
 }
