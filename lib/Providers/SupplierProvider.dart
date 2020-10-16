@@ -1,46 +1,24 @@
+import 'package:construction_procurement_app/Models/PurchaseOrderItem.dart';
 import 'package:construction_procurement_app/Models/SupplierQuotation.dart';
+import 'package:construction_procurement_app/Models/PurchaseOrder.dart';
 import 'package:construction_procurement_app/Services/FirestoreService.dart';
 import 'package:flutter/material.dart';
 
 class SupplierProvider with ChangeNotifier {
   final firestoreService = FirestoreService();
-  String _supplierName;
-  String _details;
-  String _item;
-  double _price = 0;
   List<SupplierQuotation> _supplierQuotation = List();
   int _selectedQIndex = 0;
   bool _completed = false;
+  double _poTotal = -1;
+
+  List<PurchaseOrderItem> _poItems = List();
 
   //getters
-  String get suplierName => _supplierName;
-  String get details => _details;
-  String get item => _item;
-  double get price => _price;
   bool get completedList => _completed;
   int get selectdQIndex => _selectedQIndex;
+  double get poTotal => _poTotal;
   List<SupplierQuotation> get supplierQuotations => _supplierQuotation;
-
-  //setters
-  changeSuplierName(String value) {
-    _supplierName = value;
-    notifyListeners();
-  }
-
-  changeDetails(String value) {
-    _details = value;
-    notifyListeners();
-  }
-
-  changeItem(String value) {
-    _item = value;
-    notifyListeners();
-  }
-
-  changePrice(double value) {
-    _price = value;
-    notifyListeners();
-  }
+  List<PurchaseOrderItem> get poItems => _poItems;
 
   addSQ(SupplierQuotation quotation) {
     _supplierQuotation.add(quotation);
@@ -61,8 +39,9 @@ class SupplierProvider with ChangeNotifier {
       return null;
   }
 
-  getNextQ() {
+  addPO(PurchaseOrderItem poi) {
     if (selectdQIndex < _supplierQuotation.length) {
+      _poItems.add(poi);
       _selectedQIndex++;
     } else {
       _completed = true;
@@ -70,8 +49,42 @@ class SupplierProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  calcToatal() {
+    _poTotal = 0;
+    for (PurchaseOrderItem p in _poItems) {
+      _poTotal = _poTotal +
+          ((p.quotation.product.price * p.quotation.product.qty) -
+              p.quotation.product.discount);
+    }
+    notifyListeners();
+  }
+
+  sendOrder() {
+    firestoreService.savePurchaseOrder(PurchaseOrder(
+        reqNo: _poItems[0].quotation.requisition.reqNo,
+        poItems: poItems,
+        totPrice: _poTotal));
+
+    _poTotal = -1;
+    _poItems.clear();
+  }
+
+  saveDraft() {
+    firestoreService.savePurchaseOrderDraft(PurchaseOrder(
+        reqNo: _poItems[0].quotation.requisition.reqNo,
+        poItems: poItems,
+        totPrice: _poTotal));
+  }
+
   finish() {
     _selectedQIndex = 0;
     _supplierQuotation.clear();
+  }
+
+  List<PurchaseOrder> getPos() {
+    List<PurchaseOrder> list = List();
+    // firestoreService.getPurchaseOrders().then((e) => list = e);
+    list.map((e) => print("Item Found ${e.totPrice}"));
+    return list;
   }
 }

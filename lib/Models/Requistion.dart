@@ -17,6 +17,7 @@ class Requisition {
       'reqNo': reqNo,
       'date': date,
       'total': totPrice,
+      if(products!= null)
       'products': products.map((i) => i.toMap()).toList(),
       'location': location
     };
@@ -27,5 +28,5 @@ class Requisition {
         date = firestore['date'] ?? 'N/A',
         status = firestore['status'] ?? 'Pending',
         location = firestore['location'] ?? 'N/A',
-        totPrice = firestore['total'] ?? 'N/A';
+        totPrice = double.parse(firestore['total'].toString()) ?? 0;
 }
