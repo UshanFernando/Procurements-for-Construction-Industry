@@ -60,7 +60,7 @@ class MyApp extends StatelessWidget {
               fillColor: Colors.white70,
             ),
           ),
-          home: DeliveryValidate(),
+          home: HomeScreen(),
         ));
   }
 }

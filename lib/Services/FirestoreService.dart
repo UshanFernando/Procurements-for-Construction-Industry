@@ -44,6 +44,19 @@ class FirestoreService {
     return object;
   }
 
+    Stream<List<SupplierQuotation>> getSupplierQuatationsOnly() {
+    var object = _db
+        .collection('supplierQuotation')
+        .snapshots()
+        .map((snapshot) => snapshot.documents
+            .map(
+              (document) => SupplierQuotation.fromFirestore(document.data),
+            )
+            .toList());
+
+    return object;
+  }
+
   Stream<List<PurchaseOrder>> getPurchaseOrders() {
     // QuerySnapshot querySnapshot =
     //      Firestore.instance.collection("purchaseOrders").getDocuments();
