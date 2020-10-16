@@ -116,10 +116,12 @@ class _RequsitionsListState extends State<RequsitionsList> {
               SizedBox(
                 height: 10,
               ),
-              Container(
-                  padding: EdgeInsets.all(8),
-                  color: Colors.white,
-                  child: _getTable(requsitions)),
+              requsitions != null
+                  ? Container(
+                      padding: EdgeInsets.all(8),
+                      color: Colors.white,
+                      child: _getTable(requsitions))
+                  : CircularProgressIndicator(),
               SizedBox(
                 height: 10,
               ),
@@ -188,7 +190,7 @@ class _RequsitionsListState extends State<RequsitionsList> {
     return [
       _getTitleItemWidget('Req No', 100),
       _getTitleItemWidget('Requester', 100),
-      _getTitleItemWidget('Total', 70),
+      _getTitleItemWidget('Total', 85),
       _getTitleItemWidget('Needed by Date', 100),
       _getTitleItemWidget('Status', 70),
       _getTitleItemWidget('Action', 80),
@@ -239,7 +241,7 @@ class _RequsitionsListState extends State<RequsitionsList> {
         ),
         Container(
           child: Text(requsitions[index].totPrice.toString()),
-          width: 70,
+          width: 85,
           height: 52,
           padding: EdgeInsets.fromLTRB(5, 0, 0, 0),
           alignment: Alignment.centerLeft,

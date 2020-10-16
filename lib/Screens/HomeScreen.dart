@@ -1,4 +1,6 @@
+import 'package:construction_procurement_app/Models/PurchaseOrder.dart';
 import 'package:construction_procurement_app/Providers/RequisitionProvider.dart';
+import 'package:construction_procurement_app/Screens/PurchaseOrders.dart';
 import 'package:construction_procurement_app/Screens/PurchaseRequisition.dart';
 import 'package:construction_procurement_app/Screens/RequsitionsList.dart';
 import 'package:construction_procurement_app/Services/FirestoreService.dart';
@@ -116,11 +118,11 @@ class _HomeScreenState extends State<HomeScreen> {
                           color: Colors.white, fontWeight: FontWeight.bold),
                     ),
                     onPressed: () {
-                      // Navigator.push(
-                      //   context,
-                      //   MaterialPageRoute(
-                      //       builder: (context) => RequsitionsList()),
-                      // );
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => PurchaseOrders()),
+                      );
                     }),
               ],
             ),
