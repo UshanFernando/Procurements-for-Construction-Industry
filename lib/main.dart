@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+
 import 'package:construction_procurement_app/Models/SupplierQuotation.dart';
+import 'package:construction_procurement_app/Providers/DeliveryManagerProvider.dart';
 import 'package:construction_procurement_app/Screens/HomeScreen.dart';
 import 'package:construction_procurement_app/Screens/PurchaseOrders.dart';
 import 'package:construction_procurement_app/Screens/SupplierList.dart';
@@ -29,6 +31,8 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
         providers: [
           ChangeNotifierProvider(create: (context) => RequisitionProvider()),
+          ChangeNotifierProvider(
+              create: (context) => DeliveryManagerProvider()),
           ChangeNotifierProvider(create: (context) => SupplierProvider()),
           StreamProvider(
               create: (context) => firestoreService.getRequsitions()),
@@ -55,7 +59,7 @@ class MyApp extends StatelessWidget {
               fillColor: Colors.white70,
             ),
           ),
-          home: HomeScreen(),
+          home: DeliveryValidate(),
         ));
   }
 }
