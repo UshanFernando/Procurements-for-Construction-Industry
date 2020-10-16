@@ -1,4 +1,5 @@
 import 'package:construction_procurement_app/Models/Product.dart';
+import 'package:construction_procurement_app/Models/Requistion.dart';
 import 'package:construction_procurement_app/Services/FirestoreService.dart';
 import 'package:flutter/material.dart';
 
@@ -63,6 +64,14 @@ class DeliveryManagerProvider with ChangeNotifier {
     deliveryItems.add(new Product(qty: qty, desc: desc));
     print(_deliveryItems);
     notifyListeners();
+  }
+
+  deliveryReconciliation() {
+    //List<Requisition> Reqs =
+    //firestoreService.getRequsitions();
+    // deliveryItems.add(new Product(qty: qty, desc: desc));
+    // print(_deliveryItems);
+    // notifyListeners();
   }
 
   removeDeliveryItems(Product prd) {

@@ -53,7 +53,8 @@ class _DeliveryValidateState extends State<DeliveryValidate> {
     taskSnapshot.ref.getDownloadURL().then((value) => {
           delProvider.changeImageUrl(value),
           delProvider.changeButtonDisable(false),
-          _showMyDialog(context, "succes", delProvider.isButtonDisable,
+          Navigator.of(context).pop(),
+          _showMyDialog(context, "succes", delProvider.isButtonDisable, true,
               "Delevery Quantity is Accepted")
         });
   }
@@ -163,8 +164,23 @@ class _DeliveryValidateState extends State<DeliveryValidate> {
                             borderRadius: BorderRadius.circular(30.0)),
                         child: RaisedGradientButton(
                           onPressed: () => {
-                            uploadImageToFirebase(context),
-                            delProvider.changeAllQty(qtyAllController.text)
+                            if (qtyAllController.text == '')
+                              {
+                                _showMyDialog(context, "error", false, false,
+                                    "Please enter quantity!")
+                              }
+                            else if (_imageFile == null)
+                              {
+                                _showMyDialog(context, "error", false, false,
+                                    "Please enter an image!")
+                              }
+                            else
+                              {
+                                _showMyDialog(context, "error", true, false,
+                                    "Image is uploading!"),
+                                uploadImageToFirebase(context),
+                                delProvider.changeAllQty(qtyAllController.text)
+                              }
                           },
                           child: Text(
                             "Validate",
@@ -185,7 +201,8 @@ class _DeliveryValidateState extends State<DeliveryValidate> {
     ;
   }
 
-  Future<void> _showMyDialog(context, type, isDisable, message) async {
+  Future<void> _showMyDialog(
+      context, type, isDisable, isRedirect, message) async {
     return showDialog<void>(
       context: context,
       barrierDismissible: false, // user must tap button!
@@ -193,14 +210,15 @@ class _DeliveryValidateState extends State<DeliveryValidate> {
         return AlertDialog(
           title: Center(
             child: Icon(
-              type == "succes" ? Icons.done_rounded : Icons.error,
-              size: 50,
+              type == "success" ? Icons.done_rounded : Icons.error,
+              color: Colors.black45,
+              size: 40,
             ),
           ),
           content: SingleChildScrollView(
             child: ListBody(
               children: <Widget>[
-                Text(message),
+                Center(child: Text(message)),
               ],
             ),
           ),
@@ -208,13 +226,14 @@ class _DeliveryValidateState extends State<DeliveryValidate> {
             TextButton(
               child: Text(isDisable ? "Please wait..." : "Ok"),
               onPressed: () {
-                if (!isDisable) {
-                  //Navigator.of(context).pop();
+                if (isRedirect) {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
                         builder: (context) => DeliveryReconciliate()),
                   );
+                } else {
+                  Navigator.of(context).pop();
                 }
               },
             ),

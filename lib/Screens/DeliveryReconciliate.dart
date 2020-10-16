@@ -1,6 +1,7 @@
 import 'package:construction_procurement_app/Models/Product.dart';
 import 'package:construction_procurement_app/Models/Requistion.dart';
 import 'package:construction_procurement_app/Providers/DeliveryManagerProvider.dart';
+import 'package:construction_procurement_app/Screens/DeliveryPayment.dart';
 import 'package:construction_procurement_app/Widgets/RaisedGredientBtn.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -121,9 +122,9 @@ class _DeliveryReconciliateState extends State<DeliveryReconciliate> {
                                 onChanged: (value) =>
                                     delProvider.changeDescription(value),
                                 controller: descController,
-                                keyboardType: TextInputType.number,
+                                keyboardType: TextInputType.text,
                                 decoration: new InputDecoration(
-                                  hintText: "Name",
+                                  hintText: "Item code",
                                 ),
                               ),
                             ),
@@ -156,10 +157,11 @@ class _DeliveryReconciliateState extends State<DeliveryReconciliate> {
                               if (reqController.text == "") {
                                 _showMyDialog(context, "error", false,
                                     "Please enter Ref No!");
-                              } else if(qtyController.text=="" or descController.text=="") {
+                              } else if (qtyController.text == "" ||
+                                  descController.text == "") {
                                 _showMyDialog(context, "error", false,
                                     "Please enter Goods Received!");
-                              }else{
+                              } else {
                                 delProvider.saveDeliveryItems();
                               }
                             },
@@ -185,18 +187,17 @@ class _DeliveryReconciliateState extends State<DeliveryReconciliate> {
                                 fontWeight: FontWeight.bold),
                           ),
                           onPressed: () {
-                            // reqProvider.saveProduct();
-                            // if (reqProvider.reqNo == null) {
-                            //   reqProvider.changeReqNo(reqNoController.text);
-                            //   reqProvider.changeDate(dateController.text);
-                            //   reqProvider.changeLocation(locationController.text);
-                            // }
-
-                            // Navigator.push(
-                            //   context,
-                            //   MaterialPageRoute(
-                            //       builder: (context) => RequsitionDetails()),
-                            // );
+                            delProvider.deliveryReconciliation();
+                            if (delProvider.deliveryItems.length > 0) {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => DeliveryPayment()),
+                              );
+                            } else {
+                              _showMyDialog(context, "error", false,
+                                  "Items in the list is empty!");
+                            }
                           })
                     ],
                   ),
@@ -310,13 +311,14 @@ class _DeliveryReconciliateState extends State<DeliveryReconciliate> {
           title: Center(
             child: Icon(
               type == "succes" ? Icons.done_rounded : Icons.error,
-              size: 50,
+              color: Colors.black45,
+              size: 40,
             ),
           ),
           content: SingleChildScrollView(
             child: ListBody(
               children: <Widget>[
-                Text(message),
+                Center(child: Text(message)),
               ],
             ),
           ),
@@ -326,11 +328,6 @@ class _DeliveryReconciliateState extends State<DeliveryReconciliate> {
               onPressed: () {
                 if (!isDisable) {
                   Navigator.of(context).pop();
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => DeliveryReconciliate()),
-                  );
                 }
               },
             ),

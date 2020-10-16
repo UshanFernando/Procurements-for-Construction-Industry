@@ -11,6 +11,7 @@ import 'package:provider/provider.dart';
 
 import 'Providers/RequisitionProvider.dart';
 import 'Providers/SupplierProvider.dart';
+import 'Screens/DeliveryHome.dart';
 import 'Screens/DeliveryPayment.dart';
 import 'Screens/DeliveryReconciliate.dart';
 import 'Screens/DeliveryValidate.dart';
@@ -56,7 +57,7 @@ class MyApp extends StatelessWidget {
               fillColor: Colors.white70,
             ),
           ),
-          home: DeliveryValidate(),
+          home: DeliveryHome(),
         ));
   }
 }
