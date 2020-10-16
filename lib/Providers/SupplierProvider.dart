@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 
 class SupplierProvider with ChangeNotifier {
   final firestoreService = FirestoreService();
+  List<SupplierQuotation> _supplierQuotationToLoad = List();
   List<SupplierQuotation> _supplierQuotation = List();
   int _selectedQIndex = 0;
   bool _completed = false;
@@ -18,18 +19,20 @@ class SupplierProvider with ChangeNotifier {
   int get selectdQIndex => _selectedQIndex;
   double get poTotal => _poTotal;
   List<SupplierQuotation> get supplierQuotations => _supplierQuotation;
+  List<SupplierQuotation> get supplierQuotationsOnly =>
+      _supplierQuotationToLoad;
+
   List<PurchaseOrderItem> get poItems => _poItems;
 
   addSQ(SupplierQuotation quotation) {
     _supplierQuotation.add(quotation);
     print(_supplierQuotation);
-    notifyListeners();
   }
 
   deleteSQ(SupplierQuotation quotation) {
-    _supplierQuotation.remove(quotation);
+    _supplierQuotation.removeWhere(
+        (e) => quotation.toMap().toString() == e.toMap().toString());
     print(_supplierQuotation);
-    notifyListeners();
   }
 
   SupplierQuotation getSelectedQ() {
@@ -86,5 +89,15 @@ class SupplierProvider with ChangeNotifier {
     // firestoreService.getPurchaseOrders().then((e) => list = e);
     list.map((e) => print("Item Found ${e.totPrice}"));
     return list;
+  }
+
+  List<SupplierQuotation> getSupQ() {
+    firestoreService.getSupplierQuatationsOnly().listen((event) {
+      onData(event);
+    });
+  }
+
+  void onData(List<SupplierQuotation> event) {
+    _supplierQuotationToLoad = event;
   }
 }

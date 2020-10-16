@@ -156,10 +156,11 @@ class _DeliveryReconciliateState extends State<DeliveryReconciliate> {
                               if (reqController.text == "") {
                                 _showMyDialog(context, "error", false,
                                     "Please enter Ref No!");
-                              } else if(qtyController.text=="" or descController.text=="") {
+                              } else if (qtyController.text == "" ||
+                                  descController.text == "") {
                                 _showMyDialog(context, "error", false,
                                     "Please enter Goods Received!");
-                              }else{
+                              } else {
                                 delProvider.saveDeliveryItems();
                               }
                             },
