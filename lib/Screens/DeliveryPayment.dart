@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'dart:math';
+import 'package:construction_procurement_app/Screens/DeliveryHome.dart';
 import 'package:http/http.dart' as http;
 import 'package:construction_procurement_app/Providers/DeliveryManagerProvider.dart';
 import 'package:construction_procurement_app/Widgets/RaisedGredientBtn.dart';
@@ -118,7 +119,9 @@ class _DeliveryPaymentState extends State<DeliveryPayment> {
                                 left: 10.0, right: 10.0, top: 10.0),
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(10.0),
-                              child: Image.network(delProvider.imageUrl),
+                              child: delProvider.imageUrl != null
+                                  ? Image.network(delProvider.imageUrl)
+                                  : Text("Loading..."),
                             ),
                           ),
                         ),
@@ -136,22 +139,9 @@ class _DeliveryPaymentState extends State<DeliveryPayment> {
                               _showMyDialog(context, "error", false,
                                   "Please enter the details!");
                             } else {
-                              _showMyDialog(context, "success", false,
+                              _showMyDialog(context, "success", true,
                                   "Payment Successfull!");
                             }
-
-                            // reqProvider.saveProduct();
-                            // if (reqProvider.reqNo == null) {
-                            //   reqProvider.changeReqNo(reqNoController.text);
-                            //   reqProvider.changeDate(dateController.text);
-                            //   reqProvider.changeLocation(locationController.text);
-                            // }
-
-                            // Navigator.push(
-                            //   context,
-                            //   MaterialPageRoute(
-                            //       builder: (context) => RequsitionDetails()),
-                            // );
                           })
                     ],
                   ),
@@ -187,10 +177,15 @@ class _DeliveryPaymentState extends State<DeliveryPayment> {
           ),
           actions: <Widget>[
             TextButton(
-              child: Text(isDisable ? "Please wait..." : "Ok"),
+              child: Text("Ok"),
               onPressed: () {
                 if (!isDisable) {
                   Navigator.of(context).pop();
+                } else {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => DeliveryHome()),
+                  );
                 }
               },
             ),

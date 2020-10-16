@@ -39,7 +39,7 @@ class MyApp extends StatelessWidget {
               create: (context) => firestoreService.getRequsitions()),
           StreamProvider(
               create: (context) => firestoreService.getSupplierQuatations()),
-                        StreamProvider(
+          StreamProvider(
               create: (context) => firestoreService.getPurchaseOrders()),
         ],
         child: MaterialApp(
@@ -60,7 +60,7 @@ class MyApp extends StatelessWidget {
               fillColor: Colors.white70,
             ),
           ),
-          home: DeliveryHome(),
+          home: DeliveryValidate(),
         ));
   }
 }

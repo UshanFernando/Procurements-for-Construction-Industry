@@ -38,7 +38,9 @@ class _DeliveryValidateState extends State<DeliveryValidate> {
     final pickedFile = await picker.getImage(source: ImageSource.camera);
 
     setState(() {
-      _imageFile = File(pickedFile.path);
+      if (pickedFile != null) {
+        _imageFile = File(pickedFile.path);
+      }
     });
   }
 
@@ -129,6 +131,17 @@ class _DeliveryValidateState extends State<DeliveryValidate> {
                         ),
                       ),
                       SizedBox(height: 10),
+                      Container(
+                        margin: EdgeInsets.only(bottom: 10),
+                        child: Text(
+                          "Scan your Invoice",
+                          textAlign: TextAlign.left,
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 20,
+                          ),
+                        ),
+                      ),
                       Container(
                         height: height * (2.1 / 4),
                         child: Expanded(

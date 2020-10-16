@@ -1,4 +1,5 @@
 import 'package:construction_procurement_app/Models/Product.dart';
+import 'package:construction_procurement_app/Models/PurchaseOrder.dart';
 import 'package:construction_procurement_app/Models/Requistion.dart';
 import 'package:construction_procurement_app/Providers/DeliveryManagerProvider.dart';
 import 'package:construction_procurement_app/Screens/DeliveryPayment.dart';
@@ -34,6 +35,7 @@ class _DeliveryReconciliateState extends State<DeliveryReconciliate> {
   @override
   Widget build(BuildContext context) {
     final delProvider = Provider.of<DeliveryManagerProvider>(context);
+    final pOders = Provider.of<List<PurchaseOrder>>(context);
 
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
@@ -163,6 +165,8 @@ class _DeliveryReconciliateState extends State<DeliveryReconciliate> {
                                     "Please enter Goods Received!");
                               } else {
                                 delProvider.saveDeliveryItems();
+                                qtyController.text = "";
+                                descController.text = "";
                               }
                             },
                           ),
@@ -187,13 +191,14 @@ class _DeliveryReconciliateState extends State<DeliveryReconciliate> {
                                 fontWeight: FontWeight.bold),
                           ),
                           onPressed: () {
-                            delProvider.deliveryReconciliation();
                             if (delProvider.deliveryItems.length > 0) {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => DeliveryPayment()),
-                              );
+                              if (delProvider.deliveryReconciliation(pOders)) {
+                                _showMyDialog(context, "success", true,
+                                    "Successfully accepted the delivery!");
+                              } else {
+                                _showMyDialog(context, "error", false,
+                                    "Please double check the items in the receipt!");
+                              }
                             } else {
                               _showMyDialog(context, "error", false,
                                   "Items in the list is empty!");
@@ -310,7 +315,7 @@ class _DeliveryReconciliateState extends State<DeliveryReconciliate> {
         return AlertDialog(
           title: Center(
             child: Icon(
-              type == "succes" ? Icons.done_rounded : Icons.error,
+              type == "success" ? Icons.done_rounded : Icons.error,
               color: Colors.black45,
               size: 40,
             ),
@@ -324,10 +329,15 @@ class _DeliveryReconciliateState extends State<DeliveryReconciliate> {
           ),
           actions: <Widget>[
             TextButton(
-              child: Text(isDisable ? "Please wait..." : "Ok"),
+              child: Text("Ok"),
               onPressed: () {
                 if (!isDisable) {
                   Navigator.of(context).pop();
+                } else {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => DeliveryPayment()),
+                  );
                 }
               },
             ),

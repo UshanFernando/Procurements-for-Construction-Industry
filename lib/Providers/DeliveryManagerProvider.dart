@@ -1,4 +1,6 @@
 import 'package:construction_procurement_app/Models/Product.dart';
+import 'package:construction_procurement_app/Models/PurchaseOrder.dart';
+import 'package:construction_procurement_app/Models/PurchaseOrderItem.dart';
 import 'package:construction_procurement_app/Models/Requistion.dart';
 import 'package:construction_procurement_app/Services/FirestoreService.dart';
 import 'package:flutter/material.dart';
@@ -66,7 +68,26 @@ class DeliveryManagerProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  deliveryReconciliation() {
+  bool deliveryReconciliation(pOders) {
+    int i = 0;
+    List<Product> _deliveryI = _deliveryItems;
+    List<PurchaseOrder> poi = pOders.where((n) => n.reqNo == _reqNo).toList();
+    PurchaseOrder poivar = poi[0];
+    for (var item in poivar.poItems) {
+      for (var item1 in _deliveryI) {
+        if (item.quotation.product.desc == item1.desc) {
+          if (item.quotation.product.qty == item1.qty) {
+            i++;
+          }
+        }
+      }
+    }
+    if (i == poivar.poItems.length) {
+      return true;
+    } else {
+      return false;
+    }
+    print(poi);
     //List<Requisition> Reqs =
     //firestoreService.getRequsitions();
     // deliveryItems.add(new Product(qty: qty, desc: desc));
