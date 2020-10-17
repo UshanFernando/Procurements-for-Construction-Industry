@@ -40,7 +40,7 @@ class _RequsitionsListState extends State<RequsitionsList> {
     reqProvider.getReqs();
     var requsitions = reqProvider.reqsFiltered;
     if (reqs == null || reqs.length == 0) reqs = requsitions;
-    double height = MediaQuery.of(context).size.height;
+
     double width = MediaQuery.of(context).size.width;
     return Stack(children: <Widget>[
       Image.asset(
@@ -182,37 +182,6 @@ class _RequsitionsListState extends State<RequsitionsList> {
     });
     print('filter state');
   }
-  // Widget createTable(List<Requisition> products) {
-  //   List<TableRow> rows = [];
-  //   rows.add(TableRow(children: [
-  //     Text("Requsition No",
-  //         style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-  //     Text("Requester",
-  //         style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-  //     Text("Description",
-  //         style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-  //     Text("Needed by date",
-  //         style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-  //     Text("Status",
-  //         style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-  //   ]));
-  //   for (Requisition p in products) {
-  //     rows.add(TableRow(children: [
-  //       Text(
-  //         p.reqNo,
-  //       ),
-  //       Text('Site Manager 101'),
-  //       Text(p.location),
-  //       Text(p.date),
-  //       Text('Approved')
-  //     ]));
-  //   }
-  //   // print(products);
-  //   return Table(
-  //     children: rows,
-  //     border: TableBorder.all(width: 1),
-  //   );
-  // }
 
   Widget _getTable(List<Requisition> reqs) {
     return Container(

@@ -98,7 +98,7 @@ class SupplierProvider with ChangeNotifier {
     return list;
   }
 
-  List<SupplierQuotation> getSupQ(String req) {
+  getSupQ(String req) {
     firestoreService.getSupplierQuatationsOnly(req).listen((event) {
       onData(event);
     });

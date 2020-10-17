@@ -24,7 +24,7 @@ class _PurchaseOrderCompleteState extends State<PurchaseOrderComplete> {
   @override
   Widget build(BuildContext context) {
     final supProvider = Provider.of<SupplierProvider>(context);
-    double height = MediaQuery.of(context).size.height;
+
     double width = MediaQuery.of(context).size.width;
     if (supProvider.poTotal != -1) {
       totalController.text = supProvider.poTotal.toString();

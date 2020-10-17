@@ -1,5 +1,4 @@
 import 'package:construction_procurement_app/Screens/HomeScreen.dart';
-import 'package:construction_procurement_app/Screens/PurchaseRequisition.dart';
 import 'package:flutter/material.dart';
 
 class Login extends StatelessWidget {

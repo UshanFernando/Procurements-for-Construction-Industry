@@ -1,6 +1,5 @@
 import 'package:construction_procurement_app/Models/Product.dart';
 import 'package:construction_procurement_app/Models/Requistion.dart';
-import 'package:construction_procurement_app/Models/SupplierQuotation.dart';
 import 'package:construction_procurement_app/Services/FirestoreService.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';

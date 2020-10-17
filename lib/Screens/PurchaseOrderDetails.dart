@@ -14,8 +14,6 @@ class PurchaseOrderDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double width = MediaQuery.of(context).size.width;
-    double height = MediaQuery.of(context).size.height;
     Widget cancelButton = FlatButton(
       child: Text("Cancel"),
       onPressed: () {

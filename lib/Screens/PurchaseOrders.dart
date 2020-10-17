@@ -1,13 +1,7 @@
-import 'package:construction_procurement_app/Models/Product.dart';
 import 'package:construction_procurement_app/Models/PurchaseOrder.dart';
-import 'package:construction_procurement_app/Models/Requistion.dart';
-import 'package:construction_procurement_app/Providers/RequisitionProvider.dart';
 import 'package:construction_procurement_app/Providers/SupplierProvider.dart';
 import 'package:construction_procurement_app/Screens/HomeScreen.dart';
 import 'package:construction_procurement_app/Screens/PurchaseOrderDetails.dart';
-import 'package:construction_procurement_app/Screens/PurchaseRequisition.dart';
-import 'package:construction_procurement_app/Screens/SupplierList.dart';
-import 'package:construction_procurement_app/Widgets/RaisedGredientBtn.dart';
 import 'package:flutter/material.dart';
 import 'package:horizontal_data_table/horizontal_data_table.dart';
 import 'package:provider/provider.dart';
@@ -28,10 +22,7 @@ class _PurchaseOrdersState extends State<PurchaseOrders> {
   @override
   Widget build(BuildContext context) {
     final pOders = Provider.of<List<PurchaseOrder>>(context);
-    final supProvider = Provider.of<SupplierProvider>(context);
 
-    double height = MediaQuery.of(context).size.height;
-    double width = MediaQuery.of(context).size.width;
     return Stack(children: <Widget>[
       Image.asset(
         "Assets/bg.jpg",
@@ -111,8 +102,6 @@ class _PurchaseOrdersState extends State<PurchaseOrders> {
       _getTitleItemWidget('Date', 100),
       _getTitleItemWidget('Total', 100),
       _getTitleItemWidget('Action', 100),
-      // _getTitleItemWidget('Status', 70),
-      // _getTitleItemWidget('Action', 80),
     ];
   }
 

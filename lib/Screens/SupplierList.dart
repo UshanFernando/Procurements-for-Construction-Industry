@@ -1,15 +1,12 @@
-import 'package:construction_procurement_app/Models/Product.dart';
 import 'package:construction_procurement_app/Models/Requistion.dart';
 import 'package:construction_procurement_app/Models/SupplierQuotation.dart';
-import 'package:construction_procurement_app/Providers/RequisitionProvider.dart';
+
 import 'package:construction_procurement_app/Providers/SupplierProvider.dart';
 import 'package:construction_procurement_app/Screens/PurchaseOrder.dart';
 import 'package:construction_procurement_app/Widgets/RaisedGredientBtn.dart';
 import 'package:flutter/material.dart';
 import 'package:horizontal_data_table/horizontal_data_table.dart';
 import 'package:provider/provider.dart';
-
-import 'RequisitionDetails.dart';
 
 class SupplierList extends StatefulWidget {
   @override
@@ -50,8 +47,6 @@ class _SupplierListState extends State<SupplierList> {
       Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(
-          // Here we take the value from the MyHomePage object that was created by
-          // the App.build method, and use it to set our appbar title.
           title: Text("Select Supplier Quotations"),
         ),
         body: SingleChildScrollView(
@@ -99,12 +94,6 @@ class _SupplierListState extends State<SupplierList> {
                           color: Colors.white, fontWeight: FontWeight.bold),
                     ),
                     onPressed: () {
-                      // reqProvider.saveProduct();
-                      // if (reqProvider.reqNo == null) {
-                      //   reqProvider.changeReqNo(reqNoController.text);
-                      //   reqProvider.changeDate(dateController.text);
-                      // }
-
                       Navigator.push(
                         context,
                         MaterialPageRoute(
