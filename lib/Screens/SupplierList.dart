@@ -1,7 +1,4 @@
-import 'package:construction_procurement_app/Models/Product.dart';
-import 'package:construction_procurement_app/Models/Requistion.dart';
 import 'package:construction_procurement_app/Models/SupplierQuotation.dart';
-import 'package:construction_procurement_app/Providers/RequisitionProvider.dart';
 import 'package:construction_procurement_app/Providers/SupplierProvider.dart';
 import 'package:construction_procurement_app/Screens/PurchaseOrder.dart';
 import 'package:construction_procurement_app/Widgets/RaisedGredientBtn.dart';
@@ -67,12 +64,6 @@ class _SupplierListState extends State<SupplierList> {
                           color: Colors.white, fontWeight: FontWeight.bold),
                     ),
                     onPressed: () {
-                      // reqProvider.saveProduct();
-                      // if (reqProvider.reqNo == null) {
-                      //   reqProvider.changeReqNo(reqNoController.text);
-                      //   reqProvider.changeDate(dateController.text);
-                      // }
-
                       Navigator.push(
                         context,
                         MaterialPageRoute(
@@ -98,12 +89,6 @@ class _SupplierListState extends State<SupplierList> {
                           color: Colors.white, fontWeight: FontWeight.bold),
                     ),
                     onPressed: () {
-                      // reqProvider.saveProduct();
-                      // if (reqProvider.reqNo == null) {
-                      //   reqProvider.changeReqNo(reqNoController.text);
-                      //   reqProvider.changeDate(dateController.text);
-                      // }
-
                       Navigator.push(
                         context,
                         MaterialPageRoute(
@@ -119,67 +104,6 @@ class _SupplierListState extends State<SupplierList> {
     ]);
     ;
   }
-
-  // List<bool> checked = new List();
-  // List<SupplierQuotation> supplierQuotation = new List();
-  // Widget createTable(
-  //     List<SupplierQuotation> supQuotations, SupplierProvider supProvider) {
-  //   List<TableRow> rows = [];
-  //   rows.add(TableRow(children: [
-  //     // Text("Name", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-  //     Text("Detail",
-  //         style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-  //     Text("Item", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-  //     Text("Price",
-  //         style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-  //     Text("Check", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold))
-  //   ]));
-
-  //   for (var i = 0; i < supQuotations.length; i++) {
-  //     checked.add(false);
-  //   }
-  //   for (var i = 0; i < supQuotations.length; i++) {
-  //     rows.add(TableRow(children: [
-  //       // Text(
-  //       //   p.supplier.suplierName.toString(),
-  //       // ),
-  //       Text(supQuotations[i].details.toString()),
-  //       supQuotations[i].product != null
-  //           ? Text(supQuotations[i].product.desc.toString())
-  //           : Text('N/A'),
-  //       Text(supQuotations[i].product.price.toString()),
-  //       Checkbox(
-  //         onChanged: (bool value) {
-  //           setState(() {
-  //             checked[i] = value;
-  //           });
-  //           // if (value == true) {
-  //           //   setState(() {
-  //           //     supplierQuotation.add(supQuotations[i]);
-  //           //   });
-  //           // } else if (value == false) {
-  //           //   if (supplierQuotation.contains(supQuotations[i])) {
-  //           //     setState(() {
-  //           //       supplierQuotation.remove(supQuotations[i]);
-  //           //     });
-  //           //   }
-  //           // }
-
-  //           value
-  //               ? supProvider.addSQ(supQuotations[i])
-  //               : supProvider.deleteSQ(supQuotations[i]);
-  //         },
-  //         value: checked[i],
-  //         activeColor: Color(0xFF6200EE),
-  //       )
-  //     ]));
-  //   }
-
-  //   return Table(
-  //     children: rows,
-  //     border: TableBorder.all(width: 1),
-  //   );
-  // }
 
   Widget _getTable(List<SupplierQuotation> pos) {
     return Container(
@@ -210,7 +134,6 @@ class _SupplierListState extends State<SupplierList> {
       _getTitleItemWidget('Product Code', 90),
       _getTitleItemWidget('QTY', 70),
       _getTitleItemWidget('Check', 68),
-      // _getTitleItemWidget('Total', 100),
     ];
   }
 
@@ -272,7 +195,7 @@ class _SupplierListState extends State<SupplierList> {
                   ? supProvider.addSQ(sqList[index])
                   : supProvider.deleteSQ(sqList[index]);
             },
-            value:checked[index],
+            value: checked[index],
             activeColor: Color(0xFF6200EE),
           ),
           width: 70,

@@ -1,9 +1,7 @@
 import 'package:construction_procurement_app/Models/Payment.dart';
 import 'package:construction_procurement_app/Models/Product.dart';
 import 'package:construction_procurement_app/Models/PurchaseOrder.dart';
-import 'package:construction_procurement_app/Models/PurchaseOrderItem.dart';
 import 'package:construction_procurement_app/Models/PurchaseOrderPayments.dart';
-import 'package:construction_procurement_app/Models/Requistion.dart';
 import 'package:construction_procurement_app/Services/FirestoreService.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -69,18 +67,6 @@ class DeliveryManagerProvider with ChangeNotifier {
   }
 
   saveDeliveryItems() {
-    // if (_reqNo != null) {
-    //   var newReq = Requisition(reqNo: reqNo, date: date);
-    //   firestoreService.saveRequsition(newReq);
-    //   print(newReq);
-    // }
-    // } else {
-    //   //Update
-    //   var updatedProduct =
-    //       Product(name: name, price: _price, productId: _productId);
-    //   firestoreService.saveProduct(updatedProduct);
-    // }
-
     deliveryItems.add(new Product(qty: qty, desc: desc));
     print(_deliveryItems);
     notifyListeners();
@@ -106,12 +92,6 @@ class DeliveryManagerProvider with ChangeNotifier {
     } else {
       return false;
     }
-    print(poi);
-    //List<Requisition> Reqs =
-    //firestoreService.getRequsitions();
-    // deliveryItems.add(new Product(qty: qty, desc: desc));
-    // print(_deliveryItems);
-    // notifyListeners();
   }
 
   removeDeliveryItems(Product prd) {

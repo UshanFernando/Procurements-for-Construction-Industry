@@ -1,6 +1,5 @@
 import 'package:construction_procurement_app/Models/Product.dart';
 import 'package:construction_procurement_app/Models/PurchaseOrder.dart';
-import 'package:construction_procurement_app/Models/Requistion.dart';
 import 'package:construction_procurement_app/Providers/DeliveryManagerProvider.dart';
 import 'package:construction_procurement_app/Screens/DeliveryPayment.dart';
 import 'package:construction_procurement_app/Widgets/RaisedGredientBtn.dart';
@@ -38,7 +37,6 @@ class _DeliveryReconciliateState extends State<DeliveryReconciliate> {
     final pOders = Provider.of<List<PurchaseOrder>>(context);
 
     double width = MediaQuery.of(context).size.width;
-    double height = MediaQuery.of(context).size.height;
 
     return Stack(children: <Widget>[
       Image.asset(
