@@ -39,38 +39,47 @@ class _PurchaseOrdersState extends State<PurchaseOrders> {
         width: MediaQuery.of(context).size.width,
         fit: BoxFit.cover,
       ),
-      Scaffold(
-        backgroundColor: Colors.transparent,
-        appBar: AppBar(
-          // Here we take the value from the MyHomePage object that was created by
-          // the App.build method, and use it to set our appbar title.
-          title: Text("Purchase Orders"),
-        ),
-        body: SingleChildScrollView(
-            child: Container(
-          padding: EdgeInsets.all(8),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              SizedBox(
-                height: 10,
+      new WillPopScope(
+          onWillPop: () async => false,
+          child: Scaffold(
+            backgroundColor: Colors.transparent,
+            appBar: AppBar(
+              leading: new IconButton(
+                icon: new Icon(Icons.arrow_back),
+                onPressed: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => HomeScreen()),
+                ),
               ),
-              SizedBox(
-                height: 10,
+              // Here we take the value from the MyHomePage object that was created by
+              // the App.build method, and use it to set our appbar title.
+              title: Text("Purchase Orders"),
+            ),
+            body: SingleChildScrollView(
+                child: Container(
+              padding: EdgeInsets.all(8),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    height: 10,
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  pOders != null
+                      ? Container(
+                          padding: EdgeInsets.all(8),
+                          color: Colors.white,
+                          child: _getTable(pOders))
+                      : CircularProgressIndicator(),
+                  SizedBox(
+                    height: 10,
+                  ),
+                ],
               ),
-              pOders != null
-                  ? Container(
-                      padding: EdgeInsets.all(8),
-                      color: Colors.white,
-                      child: _getTable(pOders))
-                  : CircularProgressIndicator(),
-              SizedBox(
-                height: 10,
-              ),
-            ],
-          ),
-        )),
-      )
+            )),
+          ))
     ]);
   }
 

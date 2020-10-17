@@ -146,8 +146,8 @@ class FirestoreService {
         .setData(order.toMap());
   }
 
-  // Future<void> removeProduct(String productId){
-  //   return _db.collection('products').document(productId).delete();
-  // }
+  Future<void> removePO(String productId){
+    return _db.collection('purchaseOrders').document(productId).delete();
+  }
 
 }
