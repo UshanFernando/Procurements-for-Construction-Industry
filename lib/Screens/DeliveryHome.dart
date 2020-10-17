@@ -1,34 +1,16 @@
-import 'package:construction_procurement_app/Models/PurchaseOrder.dart';
-import 'package:construction_procurement_app/Providers/RequisitionProvider.dart';
-import 'package:construction_procurement_app/Screens/PurchaseOrders.dart';
-import 'package:construction_procurement_app/Screens/PurchaseRequisition.dart';
-import 'package:construction_procurement_app/Screens/RequsitionsList.dart';
-import 'package:construction_procurement_app/Services/FirestoreService.dart';
+import 'package:construction_procurement_app/Screens/DeliveryValidate.dart';
 import 'package:construction_procurement_app/Widgets/RaisedGredientBtn.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
-class HomeScreen extends StatefulWidget {
+class DeliveryHome extends StatefulWidget {
   @override
-  _HomeScreenState createState() => _HomeScreenState();
+  _DeliveryHomeState createState() => _DeliveryHomeState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-  }
-
+class _DeliveryHomeState extends State<DeliveryHome> {
   @override
   Widget build(BuildContext context) {
-    double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
-
     return Stack(children: <Widget>[
       Image.asset(
         "Assets/bg.jpg",
@@ -48,7 +30,7 @@ class _HomeScreenState extends State<HomeScreen> {
           // in the middle of the parent.
           child: Container(
             margin: EdgeInsets.all(15),
-            height: height * 0.5,
+            height: height * 0.2,
             width: double.infinity,
             padding: EdgeInsets.all(25),
             decoration: BoxDecoration(
@@ -69,9 +51,12 @@ class _HomeScreenState extends State<HomeScreen> {
               mainAxisSize: MainAxisSize.max,
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
+                SizedBox(
+                  height: 10,
+                ),
                 RaisedGradientButton(
                     child: Text(
-                      'Purchase Requsition',
+                      'Manage Delivered Goods',
                       style: TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
@@ -84,46 +69,12 @@ class _HomeScreenState extends State<HomeScreen> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => PurchaseRequisition()),
+                            builder: (context) => DeliveryValidate()),
                       );
                     }),
                 SizedBox(
                   height: 10,
                 ),
-                RaisedGradientButton(
-                    child: Text(
-                      'View Requsition List',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    gradient: LinearGradient(
-                      colors: <Color>[Colors.red, Colors.orange[700]],
-                    ),
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => RequsitionsList()),
-                      );
-                    }),
-                SizedBox(
-                  height: 10,
-                ),
-                RaisedGradientButton(
-                    child: Text(
-                      'View Purchase Order',
-                      style: TextStyle(
-                          color: Colors.white, fontWeight: FontWeight.bold),
-                    ),
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => PurchaseOrders()),
-                      );
-                    }),
               ],
             ),
           ),
@@ -131,6 +82,5 @@ class _HomeScreenState extends State<HomeScreen> {
         // This trailing comma makes auto-formatting nicer for build methods.
       )
     ]);
-    ;
   }
 }

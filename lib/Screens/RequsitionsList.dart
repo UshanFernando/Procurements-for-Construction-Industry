@@ -3,6 +3,7 @@ import 'package:construction_procurement_app/Models/Requistion.dart';
 import 'package:construction_procurement_app/Providers/RequisitionProvider.dart';
 import 'package:construction_procurement_app/Screens/HomeScreen.dart';
 import 'package:construction_procurement_app/Screens/PurchaseRequisition.dart';
+import 'package:construction_procurement_app/Screens/SupplierList.dart';
 import 'package:construction_procurement_app/Widgets/RaisedGredientBtn.dart';
 import 'package:flutter/material.dart';
 import 'package:horizontal_data_table/horizontal_data_table.dart';
@@ -115,10 +116,12 @@ class _RequsitionsListState extends State<RequsitionsList> {
               SizedBox(
                 height: 10,
               ),
-              Container(
-                  padding: EdgeInsets.all(8),
-                  color: Colors.white,
-                  child: _getTable(requsitions)),
+              requsitions != null
+                  ? Container(
+                      padding: EdgeInsets.all(8),
+                      color: Colors.white,
+                      child: _getTable(requsitions))
+                  : CircularProgressIndicator(),
               SizedBox(
                 height: 10,
               ),
@@ -187,7 +190,7 @@ class _RequsitionsListState extends State<RequsitionsList> {
     return [
       _getTitleItemWidget('Req No', 100),
       _getTitleItemWidget('Requester', 100),
-      _getTitleItemWidget('Total', 70),
+      _getTitleItemWidget('Total', 85),
       _getTitleItemWidget('Needed by Date', 100),
       _getTitleItemWidget('Status', 70),
       _getTitleItemWidget('Action', 80),
@@ -238,7 +241,7 @@ class _RequsitionsListState extends State<RequsitionsList> {
         ),
         Container(
           child: Text(requsitions[index].totPrice.toString()),
-          width: 70,
+          width: 85,
           height: 52,
           padding: EdgeInsets.fromLTRB(5, 0, 0, 0),
           alignment: Alignment.centerLeft,
@@ -272,7 +275,12 @@ class _RequsitionsListState extends State<RequsitionsList> {
           Container(
             child: IconButton(
               icon: Icon(Icons.add_circle),
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => SupplierList()),
+                );
+              },
             ),
             width: 50,
             height: 52,
