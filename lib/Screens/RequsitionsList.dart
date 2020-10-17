@@ -1,12 +1,13 @@
-import 'package:construction_procurement_app/Models/Product.dart';
+import 'dart:math';
+
 import 'package:construction_procurement_app/Models/Requistion.dart';
 import 'package:construction_procurement_app/Providers/RequisitionProvider.dart';
-import 'package:construction_procurement_app/Screens/HomeScreen.dart';
-import 'package:construction_procurement_app/Screens/PurchaseRequisition.dart';
 import 'package:construction_procurement_app/Screens/SupplierList.dart';
 import 'package:construction_procurement_app/Widgets/RaisedGredientBtn.dart';
+import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:flutter/material.dart';
 import 'package:horizontal_data_table/horizontal_data_table.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 class RequsitionsList extends StatefulWidget {
@@ -19,6 +20,12 @@ class RequsitionsList extends StatefulWidget {
 class _RequsitionsListState extends State<RequsitionsList> {
   final startDateController = TextEditingController();
   final endDateController = TextEditingController();
+  List<Requisition> reqs;
+  @override
+  void initState() {
+    super.initState();
+    reqs = new List();
+  }
 
   @override
   void dispose() {
@@ -29,7 +36,10 @@ class _RequsitionsListState extends State<RequsitionsList> {
 
   @override
   Widget build(BuildContext context) {
-    final requsitions = Provider.of<List<Requisition>>(context);
+    final reqProvider = Provider.of<RequisitionProvider>(context);
+    reqProvider.getReqs();
+    var requsitions = reqProvider.reqsFiltered;
+    if (reqs == null || reqs.length == 0) reqs = requsitions;
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
     return Stack(children: <Widget>[
@@ -57,22 +67,44 @@ class _RequsitionsListState extends State<RequsitionsList> {
                 children: [
                   SizedBox(
                     width: width * 0.4,
-                    height: 50,
-                    child: TextField(
-                      // onChanged: (value) => reqProvider.changeLocation(value),
-                      // controller: startDateController,
+                    height: 45,
+                    child: DateTimeField(
+                      controller: startDateController,
                       decoration: new InputDecoration(
-                          hintText: "Start Date", fillColor: Colors.white),
+                        fillColor: Colors.white,
+                        hintText: "Start Date",
+                      ),
+                      format: DateFormat("dd-MM-yyyy"),
+                      onShowPicker: (context, currentValue) {
+                        return showDatePicker(
+                            context: context,
+                            fieldHintText: 'Start Date',
+                            helpText: 'Start Date',
+                            firstDate: DateTime(2020),
+                            initialDate: currentValue ?? DateTime.now(),
+                            lastDate: DateTime(2100));
+                      },
                     ),
                   ),
                   SizedBox(
                     width: width * 0.4,
-                    height: 50,
-                    child: TextField(
-                      // onChanged: (value) => reqProvider.changeLocation(value),
-                      // controller: startDateController,
+                    height: 45,
+                    child: DateTimeField(
+                      controller: endDateController,
                       decoration: new InputDecoration(
-                          hintText: "End Date", fillColor: Colors.white),
+                        fillColor: Colors.white,
+                        hintText: "End Date",
+                      ),
+                      format: DateFormat("dd-MM-yyyy"),
+                      onShowPicker: (context, currentValue) {
+                        return showDatePicker(
+                            context: context,
+                            fieldHintText: 'End Date',
+                            helpText: 'End Date',
+                            firstDate: DateTime(2020),
+                            initialDate: currentValue ?? DateTime.now(),
+                            lastDate: DateTime(2100));
+                      },
                     ),
                   ),
                 ],
@@ -106,11 +138,19 @@ class _RequsitionsListState extends State<RequsitionsList> {
                       colors: <Color>[Colors.red, Colors.orange[700]],
                     ),
                     onPressed: () {
-                      // reqProvider.sendRequsition();
-                      // Navigator.push(
-                      //   context,
-                      //   MaterialPageRoute(builder: (context) => HomeScreen()),
-                      // );
+                      if (startDateController.text.trim() == '' ||
+                          endDateController.text.trim() == '') {
+                        print('empty');
+                        reqProvider.getReqs();
+                        setState(() {
+                          reqs = null;
+                          requsitions.clear();
+                          reqProvider.getReqs();
+                          requsitions = reqProvider.reqsFiltered;
+                        });
+                      } else {
+                        filterReqs();
+                      }
                     }),
               ),
               SizedBox(
@@ -120,7 +160,7 @@ class _RequsitionsListState extends State<RequsitionsList> {
                   ? Container(
                       padding: EdgeInsets.all(8),
                       color: Colors.white,
-                      child: _getTable(requsitions))
+                      child: _getTable(reqs == null ? requsitions : reqs))
                   : CircularProgressIndicator(),
               SizedBox(
                 height: 10,
@@ -132,6 +172,16 @@ class _RequsitionsListState extends State<RequsitionsList> {
     ]);
   }
 
+  void filterReqs() {
+    DateFormat format = DateFormat("dd-MM-yyyy");
+    DateTime startDate = format.parse(startDateController.text);
+    DateTime endDate = format.parse(endDateController.text);
+    setState(() {
+      reqs.removeWhere((e) => !(format.parse(e.date).isAfter(startDate) &&
+          format.parse(e.date).isBefore(endDate)));
+    });
+    print('filter state');
+  }
   // Widget createTable(List<Requisition> products) {
   //   List<TableRow> rows = [];
   //   rows.add(TableRow(children: [
@@ -208,7 +258,7 @@ class _RequsitionsListState extends State<RequsitionsList> {
   }
 
   Widget _generateFirstColumnRow(BuildContext context, int index) {
-    final requsitions = Provider.of<List<Requisition>>(context);
+    final requsitions = reqs;
     return Container(
       child: Text(requsitions[index].reqNo),
       width: 70,
@@ -219,7 +269,7 @@ class _RequsitionsListState extends State<RequsitionsList> {
   }
 
   Widget _generateRightHandSideColumnRow(BuildContext context, int index) {
-    final requsitions = Provider.of<List<Requisition>>(context);
+    final requsitions = reqs;
     return Row(
       children: <Widget>[
         Container(
@@ -278,7 +328,10 @@ class _RequsitionsListState extends State<RequsitionsList> {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => SupplierList()),
+                  MaterialPageRoute(
+                      builder: (context) => SupplierList(
+                            requisition: requsitions[index],
+                          )),
                 );
               },
             ),

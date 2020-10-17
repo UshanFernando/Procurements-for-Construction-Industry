@@ -91,13 +91,25 @@ class SupplierProvider with ChangeNotifier {
     return list;
   }
 
-  List<SupplierQuotation> getSupQ() {
-    firestoreService.getSupplierQuatationsOnly().listen((event) {
+  List<SupplierQuotation> getSupQ(String req) {
+    firestoreService.getSupplierQuatationsOnly(req).listen((event) {
       onData(event);
     });
   }
 
   void onData(List<SupplierQuotation> event) {
     _supplierQuotationToLoad = event;
+  }
+
+  void sortName() {
+    _supplierQuotationToLoad
+        .sort((a, b) => a.supplier.supplierName.compareTo(b.supplier.supplierName));
+    notifyListeners();
+  }
+
+    void sortProduct() {
+    _supplierQuotationToLoad
+        .sort((a, b) => a.product.desc.compareTo(b.product.desc));
+    notifyListeners();
   }
 }

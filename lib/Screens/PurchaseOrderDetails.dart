@@ -1,14 +1,6 @@
 import 'package:construction_procurement_app/Models/PurchaseOrder.dart';
-import 'package:construction_procurement_app/Models/PurchaseOrderItem.dart';
 import 'package:construction_procurement_app/Widgets/PurchaseOrderItemWidget.dart';
-import 'package:construction_procurement_app/Providers/RequisitionProvider.dart';
-import 'package:construction_procurement_app/Screens/PurchaseOrders.dart';
-import 'package:construction_procurement_app/Screens/PurchaseRequisition.dart';
-import 'package:construction_procurement_app/Screens/RequsitionsList.dart';
-import 'package:construction_procurement_app/Services/FirestoreService.dart';
-import 'package:construction_procurement_app/Widgets/RaisedGredientBtn.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class PurchaseOrderDetails extends StatelessWidget {
   final PurchaseOrder purchaseOrder;

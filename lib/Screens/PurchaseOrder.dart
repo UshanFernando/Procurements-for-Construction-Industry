@@ -489,13 +489,13 @@ class _PurchaseOrderState extends State<PurchaseOrder> {
                                       approvedBy: approvedByController.text,
                                       phone: supplierPhoneController.text,
                                       requestedBy: requestedByController.text));
-                                  supProvider.finish();
+                                 
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) =>
                                             PurchaseOrderComplete()),
-                                  );
+                                  ).whenComplete(() =>  supProvider.finish());
                                 } else {
                                   showDialog(
                                       context: context,

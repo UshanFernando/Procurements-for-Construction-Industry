@@ -14,6 +14,10 @@ import 'RequisitionDetails.dart';
 class SupplierList extends StatefulWidget {
   @override
   _SupplierListState createState() => _SupplierListState();
+  final Requisition requisition;
+
+  //requiring the list of todos
+  SupplierList({Key key, @required this.requisition}) : super(key: key);
 }
 
 class _SupplierListState extends State<SupplierList> {
@@ -23,13 +27,14 @@ class _SupplierListState extends State<SupplierList> {
   final descController = TextEditingController();
   final priceController = TextEditingController();
   final locationController = TextEditingController();
+  bool sort = false;
   List<bool> checked = new List();
   @override
   Widget build(BuildContext context) {
     //final reqSupProvider = Provider.of<SupplierProvider>(context);
     final supQuotations = Provider.of<List<SupplierQuotation>>(context);
     final supProvider = Provider.of<SupplierProvider>(context);
-    supProvider.getSupQ();
+    supProvider.getSupQ(widget.requisition.reqNo);
     int qCount = supProvider.supplierQuotationsOnly.length;
     for (int x = 0; x < qCount; x++) {
       checked.add(false);
@@ -47,7 +52,7 @@ class _SupplierListState extends State<SupplierList> {
         appBar: AppBar(
           // Here we take the value from the MyHomePage object that was created by
           // the App.build method, and use it to set our appbar title.
-          title: Text("Purchase Requisition"),
+          title: Text("Select Supplier Quotations"),
         ),
         body: SingleChildScrollView(
           child: Column(
@@ -67,17 +72,13 @@ class _SupplierListState extends State<SupplierList> {
                           color: Colors.white, fontWeight: FontWeight.bold),
                     ),
                     onPressed: () {
-                      // reqProvider.saveProduct();
-                      // if (reqProvider.reqNo == null) {
-                      //   reqProvider.changeReqNo(reqNoController.text);
-                      //   reqProvider.changeDate(dateController.text);
-                      // }
-
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => RequsitionDetails()),
-                      );
+                      if (sort) {
+                        supProvider.sortName();
+                        sort = false;
+                      } else {
+                        supProvider.sortProduct();
+                        sort = true;
+                      }
                     }),
               ),
               Container(
@@ -120,67 +121,6 @@ class _SupplierListState extends State<SupplierList> {
     ;
   }
 
-  // List<bool> checked = new List();
-  // List<SupplierQuotation> supplierQuotation = new List();
-  // Widget createTable(
-  //     List<SupplierQuotation> supQuotations, SupplierProvider supProvider) {
-  //   List<TableRow> rows = [];
-  //   rows.add(TableRow(children: [
-  //     // Text("Name", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-  //     Text("Detail",
-  //         style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-  //     Text("Item", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-  //     Text("Price",
-  //         style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-  //     Text("Check", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold))
-  //   ]));
-
-  //   for (var i = 0; i < supQuotations.length; i++) {
-  //     checked.add(false);
-  //   }
-  //   for (var i = 0; i < supQuotations.length; i++) {
-  //     rows.add(TableRow(children: [
-  //       // Text(
-  //       //   p.supplier.suplierName.toString(),
-  //       // ),
-  //       Text(supQuotations[i].details.toString()),
-  //       supQuotations[i].product != null
-  //           ? Text(supQuotations[i].product.desc.toString())
-  //           : Text('N/A'),
-  //       Text(supQuotations[i].product.price.toString()),
-  //       Checkbox(
-  //         onChanged: (bool value) {
-  //           setState(() {
-  //             checked[i] = value;
-  //           });
-  //           // if (value == true) {
-  //           //   setState(() {
-  //           //     supplierQuotation.add(supQuotations[i]);
-  //           //   });
-  //           // } else if (value == false) {
-  //           //   if (supplierQuotation.contains(supQuotations[i])) {
-  //           //     setState(() {
-  //           //       supplierQuotation.remove(supQuotations[i]);
-  //           //     });
-  //           //   }
-  //           // }
-
-  //           value
-  //               ? supProvider.addSQ(supQuotations[i])
-  //               : supProvider.deleteSQ(supQuotations[i]);
-  //         },
-  //         value: checked[i],
-  //         activeColor: Color(0xFF6200EE),
-  //       )
-  //     ]));
-  //   }
-
-  //   return Table(
-  //     children: rows,
-  //     border: TableBorder.all(width: 1),
-  //   );
-  // }
-
   Widget _getTable(List<SupplierQuotation> pos) {
     return Container(
       child: HorizontalDataTable(
@@ -206,10 +146,11 @@ class _SupplierListState extends State<SupplierList> {
   List<Widget> _getTitleWidget() {
     return [
       _getTitleItemWidget('', 20),
-      _getTitleItemWidget('Detail', 100),
-      _getTitleItemWidget('Product Code', 90),
+      _getTitleItemWidget('Supplier \nName', 80),
+      _getTitleItemWidget('Detail', 80),
+      _getTitleItemWidget('Product Code', 80),
       _getTitleItemWidget('QTY', 70),
-      _getTitleItemWidget('Check', 68),
+      _getTitleItemWidget('Check', 50),
       // _getTitleItemWidget('Total', 100),
     ];
   }
@@ -242,15 +183,22 @@ class _SupplierListState extends State<SupplierList> {
     return Row(
       children: <Widget>[
         Container(
-          child: Text(sqList[index].details),
-          width: 100,
+          child: Text(sqList[index].supplier.supplierName),
+          width: 80,
           height: 52,
           padding: EdgeInsets.fromLTRB(5, 0, 0, 0),
           alignment: Alignment.centerLeft,
         ),
         Container(
           child: Text(sqList[index].product.desc),
-          width: 90,
+          width: 80,
+          height: 52,
+          padding: EdgeInsets.fromLTRB(5, 0, 0, 0),
+          alignment: Alignment.centerLeft,
+        ),
+        Container(
+          child: Text(sqList[index].product.code),
+          width: 80,
           height: 52,
           padding: EdgeInsets.fromLTRB(5, 0, 0, 0),
           alignment: Alignment.centerLeft,
@@ -272,10 +220,10 @@ class _SupplierListState extends State<SupplierList> {
                   ? supProvider.addSQ(sqList[index])
                   : supProvider.deleteSQ(sqList[index]);
             },
-            value:checked[index],
+            value: checked[index],
             activeColor: Color(0xFF6200EE),
           ),
-          width: 70,
+          width: 50,
           height: 52,
           padding: EdgeInsets.fromLTRB(5, 0, 0, 0),
           alignment: Alignment.centerLeft,

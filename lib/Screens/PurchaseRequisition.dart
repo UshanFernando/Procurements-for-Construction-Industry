@@ -1,8 +1,10 @@
-import 'package:construction_procurement_app/Models/Requistion.dart';
 import 'package:construction_procurement_app/Providers/RequisitionProvider.dart';
 import 'package:construction_procurement_app/Screens/RequisitionDetails.dart';
 import 'package:construction_procurement_app/Widgets/RaisedGredientBtn.dart';
+import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 class PurchaseRequisition extends StatefulWidget {
@@ -82,12 +84,25 @@ class _PurchaseRequisitionState extends State<PurchaseRequisition> {
                     left: 25,
                     right: 25,
                   ),
-                  child: TextField(
-                    controller: dateController,
-                    keyboardType: TextInputType.datetime,
-                    // onChanged: (value) => reqProvider.changeDate(value),
-                    decoration: new InputDecoration(
-                        hintText: "Dilivery Date", fillColor: Colors.white),
+                  child: SizedBox(
+                    height: 50,
+                    child: DateTimeField(
+                      controller: dateController,
+                      decoration: new InputDecoration(
+                        fillColor: Colors.white,
+                        hintText: "Dilivery Date",
+                      ),
+                      format: DateFormat("dd-MM-yyyy"),
+                      onShowPicker: (context, currentValue) {
+                        return showDatePicker(
+                            context: context,
+                            fieldHintText: 'Dilivery Date',
+                            helpText: 'Dilivery Date',
+                            firstDate: DateTime(2020),
+                            initialDate: currentValue ?? DateTime.now(),
+                            lastDate: DateTime(2100));
+                      },
+                    ),
                   ),
                 ),
               if (reqProvider.location == null)
@@ -133,6 +148,9 @@ class _PurchaseRequisitionState extends State<PurchaseRequisition> {
                         onChanged: (value) => reqProvider.changeQty(value),
                         controller: qtyController,
                         keyboardType: TextInputType.number,
+                        inputFormatters: <TextInputFormatter>[
+                          FilteringTextInputFormatter.digitsOnly
+                        ],
                         decoration: new InputDecoration(
                           hintText: "Quantity",
                         ),
@@ -160,6 +178,9 @@ class _PurchaseRequisitionState extends State<PurchaseRequisition> {
                         controller: priceController,
                         onChanged: (value) => reqProvider.changePrice(value),
                         keyboardType: TextInputType.number,
+                        inputFormatters: <TextInputFormatter>[
+                          FilteringTextInputFormatter.digitsOnly
+                        ],
                         decoration: new InputDecoration(
                           hintText: "Unit Price",
                         ),
@@ -173,18 +194,59 @@ class _PurchaseRequisitionState extends State<PurchaseRequisition> {
                               color: Colors.white, fontWeight: FontWeight.bold),
                         ),
                         onPressed: () {
-                          reqProvider.saveProduct();
                           if (reqProvider.reqNo == null) {
-                            reqProvider.changeReqNo(reqNoController.text);
-                            reqProvider.changeDate(dateController.text);
-                            reqProvider.changeLocation(locationController.text);
+                            if (validateReq()) {
+                              reqProvider.changeReqNo(reqNoController.text);
+                              reqProvider.changeDate(dateController.text);
+                              reqProvider
+                                  .changeLocation(locationController.text);
+                            } else {
+                              showDialog(
+                                  context: context,
+                                  child: new AlertDialog(
+                                    title: new Text(
+                                      "Incomplete Requisition Details",
+                                      style: TextStyle(color: Colors.red),
+                                    ),
+                                    content: new Text(
+                                        "Please Complete Requisition Details!"),
+                                    actions: [
+                                      FlatButton(
+                                        onPressed: () => Navigator.pop(
+                                            context, true), // passing true
+                                        child: Text('Ok'),
+                                      ),
+                                    ],
+                                  ));
+                            }
                           }
-
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => RequsitionDetails()),
-                          );
+                          if (validateProduct()) {
+                            {
+                              reqProvider.saveProduct();
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => RequsitionDetails()),
+                              );
+                            }
+                          } else
+                            showDialog(
+                                context: context,
+                                child: new AlertDialog(
+                                  title: new Text(
+                                    "Incomplete Product Details",
+                                    style: TextStyle(color: Colors.red),
+                                  ),
+                                  content: new Text(
+                                      "Please Complete Product Details!"),
+                                  actions: [
+                                    FlatButton(
+                                      onPressed: () => Navigator.pop(
+                                          context, true), // passing true
+                                      child: Text('Ok'),
+                                    ),
+                                  ],
+                                ));
                         })
                   ],
                 ),
@@ -195,6 +257,23 @@ class _PurchaseRequisitionState extends State<PurchaseRequisition> {
         // This trailing comma makes auto-formatting nicer for build methods.
       )
     ]);
-    ;
+  }
+
+  bool validateReq() {
+    if (reqNoController.text.trim().length == 0 ||
+        dateController.text.trim().length == 0 ||
+        locationController.text.trim().length == 0) {
+      return false;
+    }
+    return true;
+  }
+
+  bool validateProduct() {
+    if (qtyController.text.trim().length == 0 ||
+        descController.text.trim().length == 0 ||
+        priceController.text.trim().length == 0) {
+      return false;
+    }
+    return true;
   }
 }

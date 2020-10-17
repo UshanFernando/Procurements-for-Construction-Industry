@@ -1,13 +1,17 @@
 import 'package:construction_procurement_app/Models/Product.dart';
 import 'package:construction_procurement_app/Models/Requistion.dart';
+import 'package:construction_procurement_app/Models/SupplierQuotation.dart';
 import 'package:construction_procurement_app/Services/FirestoreService.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class RequisitionProvider with ChangeNotifier {
   final firestoreService = FirestoreService();
   String _date;
   String _reqNo;
   List<Product> _products = List();
+  List<Requisition> _filteredReqs = new List();
+  List<Requisition> _allReqs = new List();
   //product
   double _qty;
   double _total = 0;
@@ -28,6 +32,8 @@ class RequisitionProvider with ChangeNotifier {
   double get price => _price;
   String get location => _location;
   List<Requisition> get reqs => _reqs;
+
+  List<Requisition> get reqsFiltered => _filteredReqs;
   //Setters
 
   changeReqNo(String value) {
@@ -123,4 +129,45 @@ class RequisitionProvider with ChangeNotifier {
   // Future<List<Requisition>> fetchProducts() async {
   //   return await firestoreService.getRequsitions();
   // }
+  reset() {
+    _filteredReqs.clear();
+    print(_allReqs);
+    notifyListeners();
+  }
+
+  setFilterReqListInit(List<Requisition> list) {
+    _allReqs = list;
+    print(_allReqs);
+    _filteredReqs = list;
+  }
+
+  filterReqs(String sdate, String edate) {
+    DateFormat format = DateFormat("dd-MM-yyyy");
+    if (sdate != null || sdate.trim() != '') {
+      for (Requisition e in _allReqs) {
+        if (format.parse(e.date).isAfter(format.parse(sdate))) {
+          _filteredReqs.add(e);
+        }
+      }
+    }
+    if (edate != null || edate.trim() != '') {
+      for (Requisition e in _allReqs) {
+        if (format.parse(e.date).isBefore(format.parse(sdate))) {
+          _filteredReqs.add(e);
+        }
+      }
+    }
+    notifyListeners();
+    print(sdate);
+  }
+
+  getReqs() {
+    firestoreService.getRequsitions().listen((event) {
+      onData(event);
+    });
+  }
+
+  void onData(List<Requisition> event) {
+    _filteredReqs = event;
+  }
 }

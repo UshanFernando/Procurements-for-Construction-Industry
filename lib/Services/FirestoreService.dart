@@ -44,9 +44,10 @@ class FirestoreService {
     return object;
   }
 
-    Stream<List<SupplierQuotation>> getSupplierQuatationsOnly() {
+  Stream<List<SupplierQuotation>> getSupplierQuatationsOnly(String req) {
     var object = _db
         .collection('supplierQuotation')
+        .where('requisition.reqNo', isEqualTo: req)
         .snapshots()
         .map((snapshot) => snapshot.documents
             .map(
