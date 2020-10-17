@@ -1,7 +1,4 @@
-import 'dart:io';
-import 'dart:math';
 import 'package:construction_procurement_app/Screens/DeliveryHome.dart';
-import 'package:http/http.dart' as http;
 import 'package:construction_procurement_app/Providers/DeliveryManagerProvider.dart';
 import 'package:construction_procurement_app/Widgets/RaisedGredientBtn.dart';
 import 'package:flutter/material.dart';
@@ -13,12 +10,10 @@ class DeliveryPayment extends StatefulWidget {
 }
 
 class _DeliveryPaymentState extends State<DeliveryPayment> {
-  File _imageFile;
   String _invoiceNo;
-  String _invoiceAmt;
+  double _invoiceAmt;
   @override
   Widget build(BuildContext context) {
-    double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     final delProvider =
         Provider.of<DeliveryManagerProvider>(context, listen: false);
@@ -88,7 +83,7 @@ class _DeliveryPaymentState extends State<DeliveryPayment> {
                           child: TextField(
                             onChanged: (value) => {
                               setState(() {
-                                _invoiceAmt = value;
+                                _invoiceAmt = double.parse(value);
                               })
                             },
                             //controller: qtyController,
@@ -139,6 +134,9 @@ class _DeliveryPaymentState extends State<DeliveryPayment> {
                               _showMyDialog(context, "error", false,
                                   "Please enter the details!");
                             } else {
+                              delProvider.changePaymentID(_invoiceNo);
+                              delProvider.changeAmount(_invoiceAmt);
+                              delProvider.saveToDbDelivery();
                               _showMyDialog(context, "success", true,
                                   "Payment Successfull!");
                             }
