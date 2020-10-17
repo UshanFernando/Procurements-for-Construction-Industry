@@ -1,20 +1,14 @@
-import 'dart:developer';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:construction_procurement_app/Models/Product.dart';
 import 'package:construction_procurement_app/Models/PurchaseOrderItem.dart';
+import 'package:construction_procurement_app/Models/PurchaseOrderPayments.dart';
 import 'package:construction_procurement_app/Models/Requistion.dart';
 import 'package:construction_procurement_app/Models/Supplier.dart';
 import 'package:construction_procurement_app/Models/SupplierQuotation.dart';
 import 'package:construction_procurement_app/Models/PurchaseOrder.dart';
-import 'package:flutter/material.dart';
 
 class FirestoreService {
   Firestore _db = Firestore.instance;
-
-  // Future<void> saveProduct(Product product){
-  //   return _db.collection('products').document(product.reqNo).setData(product.toMap());
-  // }
 
   Future<void> saveRequsition(Requisition requisition) {
     return _db
@@ -59,10 +53,6 @@ class FirestoreService {
   }
 
   Stream<List<PurchaseOrder>> getPurchaseOrders() {
-    // QuerySnapshot querySnapshot =
-    //      Firestore.instance.collection("purchaseOrders").getDocuments();
-    // List<PurchaseOrder> list = _purchaseOrdersFromSnapshot(querySnapshot);
-    // list.map((e) => print(e.totPrice));
     return Firestore.instance
         .collection('purchaseOrders')
         .snapshots()
@@ -150,4 +140,10 @@ class FirestoreService {
     return _db.collection('purchaseOrders').document(productId).delete();
   }
 
+  Future<void> savePurchaseOrderPayments(PurchaseOrderPayment order) {
+    return _db
+        .collection('purchaseOrderPayment')
+        .document(order.payment.paymentID)
+        .setData(order.toMap());
+  }
 }
