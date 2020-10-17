@@ -227,9 +227,8 @@ class _RequsitionsListState extends State<RequsitionsList> {
   }
 
   Widget _generateFirstColumnRow(BuildContext context, int index) {
-    final requsitions = reqs;
     return Container(
-      child: Text(requsitions[index].reqNo),
+      child: Text(reqs[index].reqNo),
       width: 70,
       height: 52,
       padding: EdgeInsets.fromLTRB(5, 0, 0, 0),
@@ -238,20 +237,12 @@ class _RequsitionsListState extends State<RequsitionsList> {
   }
 
   Widget _generateRightHandSideColumnRow(BuildContext context, int index) {
-    final requsitions = reqs;
+
     return Row(
       children: <Widget>[
         Container(
           child: Row(
-            children: <Widget>[
-              // Icon(
-              //     user.userInfo[index].status
-              //         ? Icons.notifications_off
-              //         : Icons.notifications_active,
-              //     color:
-              //         user.userInfo[index].status ? Colors.red : Colors.green),
-              Text('Nimal Lansa')
-            ],
+            children: <Widget>[Text('Site Manager')],
           ),
           width: 100,
           height: 52,
@@ -259,27 +250,27 @@ class _RequsitionsListState extends State<RequsitionsList> {
           alignment: Alignment.centerLeft,
         ),
         Container(
-          child: Text(requsitions[index].totPrice.toString()),
+          child: Text(reqs[index].totPrice.toString()),
           width: 85,
           height: 52,
           padding: EdgeInsets.fromLTRB(5, 0, 0, 0),
           alignment: Alignment.centerLeft,
         ),
         Container(
-          child: Text(requsitions[index].date),
+          child: Text(reqs[index].date),
           width: 100,
           height: 52,
           padding: EdgeInsets.fromLTRB(5, 0, 0, 0),
           alignment: Alignment.centerLeft,
         ),
         Container(
-          child: requsitions[index].status != null
+          child: reqs[index].status != null
               ? Text(
-                  requsitions[index].status,
+                  reqs[index].status,
                   style: TextStyle(
-                      color: requsitions[index].status == 'Approved'
+                      color: reqs[index].status == 'Approved'
                           ? Colors.green
-                          : requsitions[index].status == 'Declined'
+                          : reqs[index].status == 'Rejected'
                               ? Colors.red
                               : Colors.orange),
                 )
@@ -289,8 +280,8 @@ class _RequsitionsListState extends State<RequsitionsList> {
           padding: EdgeInsets.fromLTRB(5, 0, 0, 0),
           alignment: Alignment.centerLeft,
         ),
-        if (requsitions[index].status != null &&
-            requsitions[index].status == 'Approved')
+        if (reqs[index].status != null &&
+            reqs[index].status == 'Approved')
           Container(
             child: IconButton(
               icon: Icon(Icons.add_circle),
@@ -299,7 +290,7 @@ class _RequsitionsListState extends State<RequsitionsList> {
                   context,
                   MaterialPageRoute(
                       builder: (context) => SupplierList(
-                            requisition: requsitions[index],
+                            requisition: reqs[index],
                           )),
                 );
               },

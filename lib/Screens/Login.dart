@@ -1,20 +1,6 @@
+import 'package:construction_procurement_app/Screens/DeliveryHome.dart';
 import 'package:construction_procurement_app/Screens/HomeScreen.dart';
 import 'package:flutter/material.dart';
-
-class Login extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: "Flutter App",
-      home: LoginPage(),
-      theme: new ThemeData(
-          brightness: Brightness.light,
-          primaryColor: Theme.of(context).primaryColor,
-          primaryColorDark: Theme.of(context).primaryColor),
-    );
-  }
-}
 
 class LoginPage extends StatefulWidget {
   @override
@@ -41,6 +27,7 @@ class _LoginPageState extends State<LoginPage> {
               hintStyle: TextStyle(
                   fontSize: 15.0, color: Theme.of(context).primaryColor),
               contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+              fillColor: Colors.transparent,
               border:
                   OutlineInputBorder(borderRadius: BorderRadius.circular(30.0)),
               enabledBorder: OutlineInputBorder(
@@ -64,6 +51,7 @@ class _LoginPageState extends State<LoginPage> {
                 color: Colors.red,
               ),
               hintText: 'Password',
+               fillColor: Colors.transparent,
               hintStyle: TextStyle(
                   fontSize: 15.0, color: Theme.of(context).primaryColor),
               contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
@@ -98,7 +86,7 @@ class _LoginPageState extends State<LoginPage> {
                 passwordController != null &&
                 passwordController.text == "123") {
               Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => HomeScreen()));
+                  MaterialPageRoute(builder: (context) => DeliveryHome()));
               usernameController.clear();
               passwordController.clear();
             } else if (usernameController != null &&
