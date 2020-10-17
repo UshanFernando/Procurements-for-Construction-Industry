@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:construction_procurement_app/Models/Product.dart';
 import 'package:construction_procurement_app/Models/PurchaseOrderItem.dart';
+import 'package:construction_procurement_app/Models/PurchaseOrderPayments.dart';
 import 'package:construction_procurement_app/Models/Requistion.dart';
 import 'package:construction_procurement_app/Models/Supplier.dart';
 import 'package:construction_procurement_app/Models/SupplierQuotation.dart';
@@ -44,7 +45,7 @@ class FirestoreService {
     return object;
   }
 
-    Stream<List<SupplierQuotation>> getSupplierQuatationsOnly() {
+  Stream<List<SupplierQuotation>> getSupplierQuatationsOnly() {
     var object = _db
         .collection('supplierQuotation')
         .snapshots()
@@ -142,6 +143,13 @@ class FirestoreService {
     return _db
         .collection('purchaseOrdersDrafts')
         .document(order.reqNo)
+        .setData(order.toMap());
+  }
+
+  Future<void> savePurchaseOrderPayments(PurchaseOrderPayment order) {
+    return _db
+        .collection('purchaseOrderPayment')
+        .document(order.payment.paymentID)
         .setData(order.toMap());
   }
 

@@ -15,7 +15,7 @@ class DeliveryPayment extends StatefulWidget {
 class _DeliveryPaymentState extends State<DeliveryPayment> {
   File _imageFile;
   String _invoiceNo;
-  String _invoiceAmt;
+  double _invoiceAmt;
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
@@ -88,7 +88,7 @@ class _DeliveryPaymentState extends State<DeliveryPayment> {
                           child: TextField(
                             onChanged: (value) => {
                               setState(() {
-                                _invoiceAmt = value;
+                                _invoiceAmt = double.parse(value);
                               })
                             },
                             //controller: qtyController,
@@ -139,6 +139,9 @@ class _DeliveryPaymentState extends State<DeliveryPayment> {
                               _showMyDialog(context, "error", false,
                                   "Please enter the details!");
                             } else {
+                              delProvider.changePaymentID(_invoiceNo);
+                              delProvider.changeAmount(_invoiceAmt);
+                              delProvider.saveToDbDelivery();
                               _showMyDialog(context, "success", true,
                                   "Payment Successfull!");
                             }
