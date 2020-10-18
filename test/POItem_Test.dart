@@ -38,9 +38,8 @@ void main() async {
       expect(_poItem.diliveryDate, isNotNull);
       expect(_poItem.phone, isNotNull);
       expect(_poItem.toMap(), isNotEmpty);
-// expect(_locationModel.languages, contains('EN'));
-// expect(_locationModel.currency, startsWith('G'));
-// expect(_locationModel.country, matches('England'));
+      expect(_poItem.toMap()['quotation']['product']['desc'], 'Bricks');
+      expect(_poItem.toMap()['quotation']['supplier']['supplierName'], 'Saman');
     });
   });
 }
