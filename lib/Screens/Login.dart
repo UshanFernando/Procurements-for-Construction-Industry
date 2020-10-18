@@ -51,7 +51,7 @@ class _LoginPageState extends State<LoginPage> {
                 color: Colors.red,
               ),
               hintText: 'Password',
-               fillColor: Colors.transparent,
+              fillColor: Colors.transparent,
               hintStyle: TextStyle(
                   fontSize: 15.0, color: Theme.of(context).primaryColor),
               contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
@@ -98,14 +98,6 @@ class _LoginPageState extends State<LoginPage> {
               usernameController.clear();
               passwordController.clear();
             } else {
-              // Widget okButton = FlatButton(
-              //   child: Text("OK"),
-              //   onPressed: () {
-              //     Navigator.push(context,
-              //         MaterialPageRoute(builder: (context) => Login()));
-              //   },
-              // );
-
               AlertDialog alert = AlertDialog(
                 title: Text("Error !"),
                 titleTextStyle: TextStyle(
@@ -116,9 +108,6 @@ class _LoginPageState extends State<LoginPage> {
                 contentTextStyle: TextStyle(
                   color: Colors.red,
                 ),
-                // actions: [
-                //   okButton,
-                // ],
               );
 
               showDialog(
@@ -184,12 +173,7 @@ class _LoginPageState extends State<LoginPage> {
                         style: TextStyle(color: Theme.of(context).primaryColor),
                       ),
                       FlatButton(
-                        onPressed: () {
-                          // Navigator.push(
-                          //   context,
-                          //   MaterialPageRoute(builder: (context) => StepOne()),
-                          // );
-                        },
+                        onPressed: () {},
                         child: Text(
                           "SignUp ",
                           style: TextStyle(
