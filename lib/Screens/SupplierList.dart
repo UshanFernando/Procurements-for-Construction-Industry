@@ -1,4 +1,6 @@
+import 'package:construction_procurement_app/Models/Requistion.dart';
 import 'package:construction_procurement_app/Models/SupplierQuotation.dart';
+
 import 'package:construction_procurement_app/Providers/SupplierProvider.dart';
 import 'package:construction_procurement_app/Screens/PurchaseOrder.dart';
 import 'package:construction_procurement_app/Widgets/RaisedGredientBtn.dart';
@@ -6,11 +8,13 @@ import 'package:flutter/material.dart';
 import 'package:horizontal_data_table/horizontal_data_table.dart';
 import 'package:provider/provider.dart';
 
-import 'RequisitionDetails.dart';
-
 class SupplierList extends StatefulWidget {
   @override
   _SupplierListState createState() => _SupplierListState();
+  final Requisition requisition;
+
+  //requiring the list of todos
+  SupplierList({Key key, @required this.requisition}) : super(key: key);
 }
 
 class _SupplierListState extends State<SupplierList> {
@@ -20,13 +24,14 @@ class _SupplierListState extends State<SupplierList> {
   final descController = TextEditingController();
   final priceController = TextEditingController();
   final locationController = TextEditingController();
+  bool sort = false;
   List<bool> checked = new List();
   @override
   Widget build(BuildContext context) {
     //final reqSupProvider = Provider.of<SupplierProvider>(context);
     final supQuotations = Provider.of<List<SupplierQuotation>>(context);
     final supProvider = Provider.of<SupplierProvider>(context);
-    supProvider.getSupQ();
+    supProvider.getSupQ(widget.requisition.reqNo);
     int qCount = supProvider.supplierQuotationsOnly.length;
     for (int x = 0; x < qCount; x++) {
       checked.add(false);
@@ -42,9 +47,7 @@ class _SupplierListState extends State<SupplierList> {
       Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(
-          // Here we take the value from the MyHomePage object that was created by
-          // the App.build method, and use it to set our appbar title.
-          title: Text("Purchase Requisition"),
+          title: Text("Select Supplier Quotations"),
         ),
         body: SingleChildScrollView(
           child: Column(
@@ -64,11 +67,13 @@ class _SupplierListState extends State<SupplierList> {
                           color: Colors.white, fontWeight: FontWeight.bold),
                     ),
                     onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => RequsitionDetails()),
-                      );
+                      if (sort) {
+                        supProvider.sortName();
+                        sort = false;
+                      } else {
+                        supProvider.sortProduct();
+                        sort = true;
+                      }
                     }),
               ),
               Container(
@@ -130,10 +135,12 @@ class _SupplierListState extends State<SupplierList> {
   List<Widget> _getTitleWidget() {
     return [
       _getTitleItemWidget('', 20),
-      _getTitleItemWidget('Detail', 100),
-      _getTitleItemWidget('Product Code', 90),
+      _getTitleItemWidget('Supplier \nName', 80),
+      _getTitleItemWidget('Detail', 80),
+      _getTitleItemWidget('Product Code', 80),
       _getTitleItemWidget('QTY', 70),
-      _getTitleItemWidget('Check', 68),
+      _getTitleItemWidget('Check', 50),
+      // _getTitleItemWidget('Total', 100),
     ];
   }
 
@@ -165,15 +172,22 @@ class _SupplierListState extends State<SupplierList> {
     return Row(
       children: <Widget>[
         Container(
-          child: Text(sqList[index].details),
-          width: 100,
+          child: Text(sqList[index].supplier.supplierName),
+          width: 80,
           height: 52,
           padding: EdgeInsets.fromLTRB(5, 0, 0, 0),
           alignment: Alignment.centerLeft,
         ),
         Container(
           child: Text(sqList[index].product.desc),
-          width: 90,
+          width: 80,
+          height: 52,
+          padding: EdgeInsets.fromLTRB(5, 0, 0, 0),
+          alignment: Alignment.centerLeft,
+        ),
+        Container(
+          child: Text(sqList[index].product.code),
+          width: 80,
           height: 52,
           padding: EdgeInsets.fromLTRB(5, 0, 0, 0),
           alignment: Alignment.centerLeft,
@@ -198,7 +212,7 @@ class _SupplierListState extends State<SupplierList> {
             value: checked[index],
             activeColor: Color(0xFF6200EE),
           ),
-          width: 70,
+          width: 50,
           height: 52,
           padding: EdgeInsets.fromLTRB(5, 0, 0, 0),
           alignment: Alignment.centerLeft,

@@ -1,11 +1,8 @@
 import 'package:construction_procurement_app/Models/PurchaseOrderItem.dart';
-import 'package:construction_procurement_app/Models/Requistion.dart';
 import 'package:construction_procurement_app/Models/SupplierQuotation.dart';
 import 'package:construction_procurement_app/Providers/RequisitionProvider.dart';
 import 'package:construction_procurement_app/Providers/SupplierProvider.dart';
-import 'package:construction_procurement_app/Screens/HomeScreen.dart';
 import 'package:construction_procurement_app/Screens/PurchaseOrderComplete.dart';
-import 'package:construction_procurement_app/Screens/RequisitionDetails.dart';
 import 'package:construction_procurement_app/Widgets/RaisedGredientBtn.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -66,7 +63,6 @@ class _PurchaseOrderState extends State<PurchaseOrder> {
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
-    double height = MediaQuery.of(context).size.height;
 
     final supProvider = Provider.of<SupplierProvider>(context);
     final reqProvider = Provider.of<RequisitionProvider>(context);
@@ -489,13 +485,13 @@ class _PurchaseOrderState extends State<PurchaseOrder> {
                                       approvedBy: approvedByController.text,
                                       phone: supplierPhoneController.text,
                                       requestedBy: requestedByController.text));
-                                  supProvider.finish();
+
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) =>
                                             PurchaseOrderComplete()),
-                                  );
+                                  ).whenComplete(() => supProvider.finish());
                                 } else {
                                   showDialog(
                                       context: context,

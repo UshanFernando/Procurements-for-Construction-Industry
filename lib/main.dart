@@ -7,6 +7,7 @@ import 'package:construction_procurement_app/Screens/PurchaseOrders.dart';
 import 'package:construction_procurement_app/Screens/SupplierList.dart';
 import 'package:construction_procurement_app/Screens/Login.dart';
 import 'package:construction_procurement_app/Screens/PurchaseOrder.dart';
+import 'package:construction_procurement_app/Screens/Login.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'Providers/RequisitionProvider.dart';
@@ -53,7 +54,7 @@ class MyApp extends StatelessWidget {
               fillColor: Colors.white70,
             ),
           ),
-          home: Login(),
+          home: LoginPage(),
         ));
   }
 }

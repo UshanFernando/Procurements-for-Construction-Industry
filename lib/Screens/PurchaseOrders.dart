@@ -1,13 +1,7 @@
-import 'package:construction_procurement_app/Models/Product.dart';
 import 'package:construction_procurement_app/Models/PurchaseOrder.dart';
-import 'package:construction_procurement_app/Models/Requistion.dart';
-import 'package:construction_procurement_app/Providers/RequisitionProvider.dart';
 import 'package:construction_procurement_app/Providers/SupplierProvider.dart';
 import 'package:construction_procurement_app/Screens/HomeScreen.dart';
 import 'package:construction_procurement_app/Screens/PurchaseOrderDetails.dart';
-import 'package:construction_procurement_app/Screens/PurchaseRequisition.dart';
-import 'package:construction_procurement_app/Screens/SupplierList.dart';
-import 'package:construction_procurement_app/Widgets/RaisedGredientBtn.dart';
 import 'package:flutter/material.dart';
 import 'package:horizontal_data_table/horizontal_data_table.dart';
 import 'package:provider/provider.dart';
@@ -28,10 +22,7 @@ class _PurchaseOrdersState extends State<PurchaseOrders> {
   @override
   Widget build(BuildContext context) {
     final pOders = Provider.of<List<PurchaseOrder>>(context);
-    final supProvider = Provider.of<SupplierProvider>(context);
 
-    double height = MediaQuery.of(context).size.height;
-    double width = MediaQuery.of(context).size.width;
     return Stack(children: <Widget>[
       Image.asset(
         "Assets/bg.jpg",
@@ -39,38 +30,47 @@ class _PurchaseOrdersState extends State<PurchaseOrders> {
         width: MediaQuery.of(context).size.width,
         fit: BoxFit.cover,
       ),
-      Scaffold(
-        backgroundColor: Colors.transparent,
-        appBar: AppBar(
-          // Here we take the value from the MyHomePage object that was created by
-          // the App.build method, and use it to set our appbar title.
-          title: Text("Purchase Orders"),
-        ),
-        body: SingleChildScrollView(
-            child: Container(
-          padding: EdgeInsets.all(8),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              SizedBox(
-                height: 10,
+      new WillPopScope(
+          onWillPop: () async => false,
+          child: Scaffold(
+            backgroundColor: Colors.transparent,
+            appBar: AppBar(
+              leading: new IconButton(
+                icon: new Icon(Icons.arrow_back),
+                onPressed: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => HomeScreen()),
+                ),
               ),
-              SizedBox(
-                height: 10,
+              // Here we take the value from the MyHomePage object that was created by
+              // the App.build method, and use it to set our appbar title.
+              title: Text("Purchase Orders"),
+            ),
+            body: SingleChildScrollView(
+                child: Container(
+              padding: EdgeInsets.all(8),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    height: 10,
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  pOders != null
+                      ? Container(
+                          padding: EdgeInsets.all(8),
+                          color: Colors.white,
+                          child: _getTable(pOders))
+                      : CircularProgressIndicator(),
+                  SizedBox(
+                    height: 10,
+                  ),
+                ],
               ),
-              pOders != null
-                  ? Container(
-                      padding: EdgeInsets.all(8),
-                      color: Colors.white,
-                      child: _getTable(pOders))
-                  : CircularProgressIndicator(),
-              SizedBox(
-                height: 10,
-              ),
-            ],
-          ),
-        )),
-      )
+            )),
+          ))
     ]);
   }
 
@@ -102,8 +102,6 @@ class _PurchaseOrdersState extends State<PurchaseOrders> {
       _getTitleItemWidget('Date', 100),
       _getTitleItemWidget('Total', 100),
       _getTitleItemWidget('Action', 100),
-      // _getTitleItemWidget('Status', 70),
-      // _getTitleItemWidget('Action', 80),
     ];
   }
 

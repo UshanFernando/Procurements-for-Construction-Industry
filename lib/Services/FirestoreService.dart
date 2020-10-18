@@ -38,9 +38,10 @@ class FirestoreService {
     return object;
   }
 
-  Stream<List<SupplierQuotation>> getSupplierQuatationsOnly() {
+  Stream<List<SupplierQuotation>> getSupplierQuatationsOnly(String req) {
     var object = _db
         .collection('supplierQuotation')
+        .where('requisition.reqNo', isEqualTo: req)
         .snapshots()
         .map((snapshot) => snapshot.documents
             .map(
@@ -133,6 +134,10 @@ class FirestoreService {
         .collection('purchaseOrdersDrafts')
         .document(order.reqNo)
         .setData(order.toMap());
+  }
+
+  Future<void> removePO(String productId){
+    return _db.collection('purchaseOrders').document(productId).delete();
   }
 
   Future<void> savePurchaseOrderPayments(PurchaseOrderPayment order) {

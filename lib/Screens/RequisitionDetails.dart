@@ -76,7 +76,7 @@ class _RequsitionDetailsState extends State<RequsitionDetails> {
                           style: TextStyle(
                               fontSize: 16, fontWeight: FontWeight.bold)),
                       SizedBox(
-                        width: 47,
+                        width: 10,
                       ),
                     ],
                   ),

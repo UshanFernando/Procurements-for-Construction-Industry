@@ -28,55 +28,83 @@ class _DeliveryHomeState extends State<DeliveryHome> {
         body: Center(
           // Center is a layout widget. It takes a single child and positions it
           // in the middle of the parent.
-          child: Container(
-            margin: EdgeInsets.all(15),
-            height: height * 0.2,
-            width: double.infinity,
-            padding: EdgeInsets.all(25),
-            decoration: BoxDecoration(
-              color: Colors.white54,
-              borderRadius: BorderRadius.all(
-                Radius.circular(20),
+          child: Column(
+            children: [
+              Container(
+                margin: EdgeInsets.all(20),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Site Manager',
+                          style: TextStyle(color: Colors.white, fontSize: 22),
+                        ),
+                        Text('ID:101',
+                            style: TextStyle(color: Colors.white, fontSize: 22))
+                      ],
+                    ),
+                    Image.asset(
+                      'Assets/avt.png',
+                      width: 60,
+                    )
+                  ],
+                ),
               ),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.5),
-                  spreadRadius: 5,
-                  blurRadius: 7,
-                  offset: Offset(0, 3), // changes position of shadow
-                ),
-              ],
-            ),
-            child: Column(
-              mainAxisSize: MainAxisSize.max,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                SizedBox(
-                  height: 10,
-                ),
-                RaisedGradientButton(
-                    child: Text(
-                      'Manage Delivered Goods',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                      ),
+              SizedBox(height: height*0.2,),
+              Container(
+                margin: EdgeInsets.all(15),
+                height: height * 0.2,
+                width: double.infinity,
+                padding: EdgeInsets.all(25),
+                decoration: BoxDecoration(
+                  color: Colors.white54,
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(20),
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.5),
+                      spreadRadius: 5,
+                      blurRadius: 7,
+                      offset: Offset(0, 3), // changes position of shadow
                     ),
-                    gradient: LinearGradient(
-                      colors: <Color>[Colors.red, Colors.orange[700]],
-                    ),
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => DeliveryValidate()),
-                      );
-                    }),
-                SizedBox(
-                  height: 10,
+                  ],
                 ),
-              ],
-            ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    SizedBox(
+                      height: 10,
+                    ),
+                    RaisedGradientButton(
+                        child: Text(
+                          'Manage Delivered Goods',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        gradient: LinearGradient(
+                          colors: <Color>[Colors.red, Colors.orange[700]],
+                        ),
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => DeliveryValidate()),
+                          );
+                        }),
+                    SizedBox(
+                      height: 10,
+                    ),
+                  ],
+                ),
+              ),
+            ],
           ),
         ),
         // This trailing comma makes auto-formatting nicer for build methods.

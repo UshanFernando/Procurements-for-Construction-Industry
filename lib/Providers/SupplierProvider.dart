@@ -84,6 +84,13 @@ class SupplierProvider with ChangeNotifier {
     _supplierQuotation.clear();
   }
 
+  finishPO() {
+    _selectedQIndex = 0;
+    _supplierQuotation.clear();
+    _poTotal = -1;
+    _poItems.clear();
+  }
+
   List<PurchaseOrder> getPos() {
     List<PurchaseOrder> list = List();
     // firestoreService.getPurchaseOrders().then((e) => list = e);
@@ -91,13 +98,25 @@ class SupplierProvider with ChangeNotifier {
     return list;
   }
 
-  List<SupplierQuotation> getSupQ() {
-    firestoreService.getSupplierQuatationsOnly().listen((event) {
+  getSupQ(String req) {
+    firestoreService.getSupplierQuatationsOnly(req).listen((event) {
       onData(event);
     });
   }
 
   void onData(List<SupplierQuotation> event) {
     _supplierQuotationToLoad = event;
+  }
+
+  void sortName() {
+    _supplierQuotationToLoad.sort(
+        (a, b) => a.supplier.supplierName.compareTo(b.supplier.supplierName));
+    notifyListeners();
+  }
+
+  void sortProduct() {
+    _supplierQuotationToLoad
+        .sort((a, b) => a.product.desc.compareTo(b.product.desc));
+    notifyListeners();
   }
 }

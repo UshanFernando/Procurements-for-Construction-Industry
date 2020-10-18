@@ -1,11 +1,6 @@
-import 'package:construction_procurement_app/Models/Product.dart';
 import 'package:construction_procurement_app/Models/PurchaseOrderItem.dart';
-import 'package:construction_procurement_app/Models/Requistion.dart';
-import 'package:construction_procurement_app/Providers/RequisitionProvider.dart';
 import 'package:construction_procurement_app/Providers/SupplierProvider.dart';
 import 'package:construction_procurement_app/Screens/HomeScreen.dart';
-import 'package:construction_procurement_app/Screens/PurchaseRequisition.dart';
-import 'package:construction_procurement_app/Screens/SupplierList.dart';
 import 'package:construction_procurement_app/Widgets/RaisedGredientBtn.dart';
 import 'package:flutter/material.dart';
 import 'package:horizontal_data_table/horizontal_data_table.dart';
@@ -29,7 +24,7 @@ class _PurchaseOrderCompleteState extends State<PurchaseOrderComplete> {
   @override
   Widget build(BuildContext context) {
     final supProvider = Provider.of<SupplierProvider>(context);
-    double height = MediaQuery.of(context).size.height;
+
     double width = MediaQuery.of(context).size.width;
     if (supProvider.poTotal != -1) {
       totalController.text = supProvider.poTotal.toString();
@@ -43,60 +38,105 @@ class _PurchaseOrderCompleteState extends State<PurchaseOrderComplete> {
         width: MediaQuery.of(context).size.width,
         fit: BoxFit.cover,
       ),
-      Scaffold(
-        backgroundColor: Colors.transparent,
-        appBar: AppBar(
-          // Here we take the value from the MyHomePage object that was created by
-          // the App.build method, and use it to set our appbar title.
-          title: Text("Purchase Order Complete"),
-        ),
-        body: SingleChildScrollView(
-            child: Container(
-          padding: EdgeInsets.all(8),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              SizedBox(
-                height: 10,
-              ),
-              supProvider.poItems.length != 0
-                  ? Container(
-                      padding: EdgeInsets.all(8),
-                      color: Colors.white,
-                      child: _getTable(supProvider.poItems))
-                  : CircularProgressIndicator(),
-              SizedBox(
-                height: 10,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      WillPopScope(
+          onWillPop: () async => false,
+          child: Scaffold(
+            backgroundColor: Colors.transparent,
+            appBar: AppBar(
+              leading: new IconButton(
+                  icon: new Icon(Icons.close),
+                  onPressed: () => {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => HomeScreen())),
+                                supProvider.finishPO(),
+                      }),
+              // Here we take the value from the MyHomePage object that was created by
+              // the App.build method, and use it to set our appbar title.
+              title: Text("Purchase Order Complete"),
+            ),
+            body: SingleChildScrollView(
+                child: Container(
+              padding: EdgeInsets.all(8),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   SizedBox(
-                    height: 50,
-                    width: width * 0.5,
-                    child: TextField(
-                      controller: totalController,
-                      decoration: new InputDecoration(
-                        fillColor: Colors.white,
-                        hintText: "Order Total",
+                    height: 10,
+                  ),
+                  supProvider.poItems.length != 0
+                      ? Container(
+                          padding: EdgeInsets.all(8),
+                          color: Colors.white,
+                          child: _getTable(supProvider.poItems))
+                      : CircularProgressIndicator(),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      SizedBox(
+                        height: 50,
+                        width: width * 0.5,
+                        child: TextField(
+                          controller: totalController,
+                          decoration: new InputDecoration(
+                            fillColor: Colors.white,
+                            hintText: "Order Total",
+                          ),
+                        ),
                       ),
-                    ),
+                      SizedBox(
+                        width: width * 0.4,
+                        height: 50,
+                        child: RaisedGradientButton(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  Icons.calculate,
+                                  color: Colors.white,
+                                  size: 28,
+                                ),
+                                SizedBox(width: 6),
+                                Text(
+                                  'Calculate',
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 18),
+                                ),
+                              ],
+                            ),
+                            gradient: LinearGradient(
+                              colors: <Color>[Colors.red, Colors.orange[700]],
+                            ),
+                            onPressed: () {
+                              supProvider.calcToatal();
+                            }),
+                      ),
+                    ],
                   ),
                   SizedBox(
-                    width: width * 0.4,
-                    height: 50,
+                    height: 30,
+                  ),
+                  SizedBox(
+                    width: width * 0.9,
+                    height: 40,
                     child: RaisedGradientButton(
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Icon(
-                              Icons.calculate,
+                              Icons.send_and_archive,
                               color: Colors.white,
                               size: 28,
                             ),
                             SizedBox(width: 6),
                             Text(
-                              'Calculate',
+                              'Confirm Order',
                               style: TextStyle(
                                   color: Colors.white,
                                   fontWeight: FontWeight.w600,
@@ -108,120 +148,86 @@ class _PurchaseOrderCompleteState extends State<PurchaseOrderComplete> {
                           colors: <Color>[Colors.red, Colors.orange[700]],
                         ),
                         onPressed: () {
-                          supProvider.calcToatal();
+                          supProvider.sendOrder();
+                          showDialog(
+                              context: context,
+                              child: new AlertDialog(
+                                title: new Text(
+                                  "Order Confirmed!",
+                                  style: TextStyle(color: Colors.green),
+                                ),
+                                content: Image.asset(
+                                  'Assets/success.png',
+                                  height: 100,
+                                ),
+                                actions: [
+                                  FlatButton(
+                                    onPressed: () => Navigator.pop(
+                                        context, true), // passing true
+                                    child: Text('Ok'),
+                                  ),
+                                ],
+                              )).whenComplete(() => Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => HomeScreen()),
+                              ));
                         }),
                   ),
-                ],
-              ),
-              SizedBox(
-                height: 30,
-              ),
-              SizedBox(
-                width: width * 0.9,
-                height: 40,
-                child: RaisedGradientButton(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          Icons.send_and_archive,
-                          color: Colors.white,
-                          size: 28,
-                        ),
-                        SizedBox(width: 6),
-                        Text(
-                          'Confirm Order',
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w600,
-                              fontSize: 18),
-                        ),
-                      ],
-                    ),
-                    gradient: LinearGradient(
-                      colors: <Color>[Colors.red, Colors.orange[700]],
-                    ),
-                    onPressed: () {
-                      supProvider.sendOrder();
-                      showDialog(
-                          context: context,
-                          child: new AlertDialog(
-                            title: new Text(
-                              "Order Confirmed!",
-                              style: TextStyle(color: Colors.green),
-                            ),
-                            content: Image.asset(
-                              'Assets/success.png',
-                              height: 100,
-                            ),
-                            actions: [
-                              FlatButton(
-                                onPressed: () => Navigator.pop(
-                                    context, true), // passing true
-                                child: Text('Ok'),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  SizedBox(
+                      width: width * 0.9,
+                      height: 40,
+                      child: RaisedGradientButton(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.drafts,
+                                color: Colors.white,
+                                size: 28,
+                              ),
+                              SizedBox(width: 6),
+                              Text(
+                                'Save Draft      ',
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 18),
                               ),
                             ],
-                          )).whenComplete(() =>Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => HomeScreen()),
-                          ));
-                    }),
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              SizedBox(
-                  width: width * 0.9,
-                  height: 40,
-                  child: RaisedGradientButton(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(
-                            Icons.drafts,
-                            color: Colors.white,
-                            size: 28,
                           ),
-                          SizedBox(width: 6),
-                          Text(
-                            'Save Draft      ',
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.w600,
-                                fontSize: 18),
+                          gradient: LinearGradient(
+                            colors: <Color>[Colors.red, Colors.orange[700]],
                           ),
-                        ],
-                      ),
-                      gradient: LinearGradient(
-                        colors: <Color>[Colors.red, Colors.orange[700]],
-                      ),
-                      onPressed: () {
-                        supProvider.saveDraft();
-                        showDialog(
-                            context: context,
-                            child: new AlertDialog(
-                              title: new Text(
-                                "Draft Saved!",
-                                style: TextStyle(color: Colors.green),
-                              ),
-                              content: Image.asset(
-                                'Assets/success.png',
-                                height: 100,
-                              ),
-                              actions: [
-                                FlatButton(
-                                  onPressed: () => Navigator.pop(
-                                      context, true), // passing true
-                                  child: Text('Ok'),
-                                ),
-                              ],
-                            ));
-                      })),
-            ],
-          ),
-        )),
-      )
+                          onPressed: () {
+                            supProvider.saveDraft();
+                            showDialog(
+                                context: context,
+                                child: new AlertDialog(
+                                  title: new Text(
+                                    "Draft Saved!",
+                                    style: TextStyle(color: Colors.green),
+                                  ),
+                                  content: Image.asset(
+                                    'Assets/success.png',
+                                    height: 100,
+                                  ),
+                                  actions: [
+                                    FlatButton(
+                                      onPressed: () => Navigator.pop(
+                                          context, true), // passing true
+                                      child: Text('Ok'),
+                                    ),
+                                  ],
+                                ));
+                          })),
+                ],
+              ),
+            )),
+          ))
     ]);
   }
 

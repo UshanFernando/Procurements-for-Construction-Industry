@@ -1,12 +1,8 @@
-import 'package:construction_procurement_app/Models/PurchaseOrder.dart';
-import 'package:construction_procurement_app/Providers/RequisitionProvider.dart';
 import 'package:construction_procurement_app/Screens/PurchaseOrders.dart';
 import 'package:construction_procurement_app/Screens/PurchaseRequisition.dart';
 import 'package:construction_procurement_app/Screens/RequsitionsList.dart';
-import 'package:construction_procurement_app/Services/FirestoreService.dart';
 import 'package:construction_procurement_app/Widgets/RaisedGredientBtn.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -46,86 +42,114 @@ class _HomeScreenState extends State<HomeScreen> {
         body: Center(
           // Center is a layout widget. It takes a single child and positions it
           // in the middle of the parent.
-          child: Container(
-            margin: EdgeInsets.all(15),
-            height: height * 0.5,
-            width: double.infinity,
-            padding: EdgeInsets.all(25),
-            decoration: BoxDecoration(
-              color: Colors.white54,
-              borderRadius: BorderRadius.all(
-                Radius.circular(20),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                margin: EdgeInsets.all(20),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Site Manager',
+                          style: TextStyle(color: Colors.white, fontSize: 22),
+                        ),
+                        Text('ID:101',
+                            style: TextStyle(color: Colors.white, fontSize: 22))
+                      ],
+                    ),
+                    Image.asset(
+                      'Assets/avt.png',
+                      width: 60,
+                    )
+                  ],
+                ),
               ),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.5),
-                  spreadRadius: 5,
-                  blurRadius: 7,
-                  offset: Offset(0, 3), // changes position of shadow
+              Container(
+                margin: EdgeInsets.all(15),
+                height: height * 0.5,
+                width: double.infinity,
+                padding: EdgeInsets.all(25),
+                decoration: BoxDecoration(
+                  color: Colors.white54,
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(20),
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.5),
+                      spreadRadius: 5,
+                      blurRadius: 7,
+                      offset: Offset(0, 3), // changes position of shadow
+                    ),
+                  ],
                 ),
-              ],
-            ),
-            child: Column(
-              mainAxisSize: MainAxisSize.max,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                RaisedGradientButton(
-                    child: Text(
-                      'Purchase Requsition',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                      ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    RaisedGradientButton(
+                        child: Text(
+                          'Purchase Requsition',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        gradient: LinearGradient(
+                          colors: <Color>[Colors.red, Colors.orange[700]],
+                        ),
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => PurchaseRequisition()),
+                          );
+                        }),
+                    SizedBox(
+                      height: 10,
                     ),
-                    gradient: LinearGradient(
-                      colors: <Color>[Colors.red, Colors.orange[700]],
+                    RaisedGradientButton(
+                        child: Text(
+                          'View Requsition List',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        gradient: LinearGradient(
+                          colors: <Color>[Colors.red, Colors.orange[700]],
+                        ),
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => RequsitionsList()),
+                          );
+                        }),
+                    SizedBox(
+                      height: 10,
                     ),
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => PurchaseRequisition()),
-                      );
-                    }),
-                SizedBox(
-                  height: 10,
+                    RaisedGradientButton(
+                        child: Text(
+                          'View Purchase Order',
+                          style: TextStyle(
+                              color: Colors.white, fontWeight: FontWeight.bold),
+                        ),
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => PurchaseOrders()),
+                          );
+                        }),
+                  ],
                 ),
-                RaisedGradientButton(
-                    child: Text(
-                      'View Requsition List',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    gradient: LinearGradient(
-                      colors: <Color>[Colors.red, Colors.orange[700]],
-                    ),
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => RequsitionsList()),
-                      );
-                    }),
-                SizedBox(
-                  height: 10,
-                ),
-                RaisedGradientButton(
-                    child: Text(
-                      'View Purchase Order',
-                      style: TextStyle(
-                          color: Colors.white, fontWeight: FontWeight.bold),
-                    ),
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => PurchaseOrders()),
-                      );
-                    }),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
         // This trailing comma makes auto-formatting nicer for build methods.

@@ -19,7 +19,8 @@ class Requisition {
       'total': totPrice,
       if(products!= null)
       'products': products.map((i) => i.toMap()).toList(),
-      'location': location
+      'location': location,
+      'status':'Pending'
     };
   }
 

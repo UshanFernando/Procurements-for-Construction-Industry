@@ -1,5 +1,6 @@
 import 'package:construction_procurement_app/Models/Product.dart';
 import 'package:construction_procurement_app/Models/PurchaseOrderItem.dart';
+import 'package:intl/intl.dart';
 
 class PurchaseOrder {
   String reqNo;
@@ -10,9 +11,12 @@ class PurchaseOrder {
   PurchaseOrder({this.reqNo, this.date, this.poItems, this.totPrice});
 
   Map<String, dynamic> toMap() {
+    final DateTime now = DateTime.now();
+    final DateFormat formatter = DateFormat('dd-MM-yyyy');
+    final String formatted = formatter.format(now);
     return {
       'reqNo': reqNo,
-      'date': date,
+      'date': formatted,
       'total': totPrice,
       'poItems': poItems.map((i) => i.toMap()).toList(),
     };

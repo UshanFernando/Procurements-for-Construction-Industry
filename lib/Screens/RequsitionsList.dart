@@ -1,12 +1,13 @@
-import 'package:construction_procurement_app/Models/Product.dart';
+import 'dart:math';
+
 import 'package:construction_procurement_app/Models/Requistion.dart';
 import 'package:construction_procurement_app/Providers/RequisitionProvider.dart';
-import 'package:construction_procurement_app/Screens/HomeScreen.dart';
-import 'package:construction_procurement_app/Screens/PurchaseRequisition.dart';
 import 'package:construction_procurement_app/Screens/SupplierList.dart';
 import 'package:construction_procurement_app/Widgets/RaisedGredientBtn.dart';
+import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:flutter/material.dart';
 import 'package:horizontal_data_table/horizontal_data_table.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 class RequsitionsList extends StatefulWidget {
@@ -19,6 +20,12 @@ class RequsitionsList extends StatefulWidget {
 class _RequsitionsListState extends State<RequsitionsList> {
   final startDateController = TextEditingController();
   final endDateController = TextEditingController();
+  List<Requisition> reqs;
+  @override
+  void initState() {
+    super.initState();
+    reqs = new List();
+  }
 
   @override
   void dispose() {
@@ -29,8 +36,11 @@ class _RequsitionsListState extends State<RequsitionsList> {
 
   @override
   Widget build(BuildContext context) {
-    final requsitions = Provider.of<List<Requisition>>(context);
-    double height = MediaQuery.of(context).size.height;
+    final reqProvider = Provider.of<RequisitionProvider>(context);
+    reqProvider.getReqs();
+    var requsitions = reqProvider.reqsFiltered;
+    if (reqs == null || reqs.length == 0) reqs = requsitions;
+
     double width = MediaQuery.of(context).size.width;
     return Stack(children: <Widget>[
       Image.asset(
@@ -57,22 +67,44 @@ class _RequsitionsListState extends State<RequsitionsList> {
                 children: [
                   SizedBox(
                     width: width * 0.4,
-                    height: 50,
-                    child: TextField(
-                      // onChanged: (value) => reqProvider.changeLocation(value),
-                      // controller: startDateController,
+                    height: 45,
+                    child: DateTimeField(
+                      controller: startDateController,
                       decoration: new InputDecoration(
-                          hintText: "Start Date", fillColor: Colors.white),
+                        fillColor: Colors.white,
+                        hintText: "Start Date",
+                      ),
+                      format: DateFormat("dd-MM-yyyy"),
+                      onShowPicker: (context, currentValue) {
+                        return showDatePicker(
+                            context: context,
+                            fieldHintText: 'Start Date',
+                            helpText: 'Start Date',
+                            firstDate: DateTime(2020),
+                            initialDate: currentValue ?? DateTime.now(),
+                            lastDate: DateTime(2100));
+                      },
                     ),
                   ),
                   SizedBox(
                     width: width * 0.4,
-                    height: 50,
-                    child: TextField(
-                      // onChanged: (value) => reqProvider.changeLocation(value),
-                      // controller: startDateController,
+                    height: 45,
+                    child: DateTimeField(
+                      controller: endDateController,
                       decoration: new InputDecoration(
-                          hintText: "End Date", fillColor: Colors.white),
+                        fillColor: Colors.white,
+                        hintText: "End Date",
+                      ),
+                      format: DateFormat("dd-MM-yyyy"),
+                      onShowPicker: (context, currentValue) {
+                        return showDatePicker(
+                            context: context,
+                            fieldHintText: 'End Date',
+                            helpText: 'End Date',
+                            firstDate: DateTime(2020),
+                            initialDate: currentValue ?? DateTime.now(),
+                            lastDate: DateTime(2100));
+                      },
                     ),
                   ),
                 ],
@@ -106,11 +138,19 @@ class _RequsitionsListState extends State<RequsitionsList> {
                       colors: <Color>[Colors.red, Colors.orange[700]],
                     ),
                     onPressed: () {
-                      // reqProvider.sendRequsition();
-                      // Navigator.push(
-                      //   context,
-                      //   MaterialPageRoute(builder: (context) => HomeScreen()),
-                      // );
+                      if (startDateController.text.trim() == '' ||
+                          endDateController.text.trim() == '') {
+                        print('empty');
+                        reqProvider.getReqs();
+                        setState(() {
+                          reqs = null;
+                          requsitions.clear();
+                          reqProvider.getReqs();
+                          requsitions = reqProvider.reqsFiltered;
+                        });
+                      } else {
+                        filterReqs();
+                      }
                     }),
               ),
               SizedBox(
@@ -120,7 +160,7 @@ class _RequsitionsListState extends State<RequsitionsList> {
                   ? Container(
                       padding: EdgeInsets.all(8),
                       color: Colors.white,
-                      child: _getTable(requsitions))
+                      child: _getTable(reqs == null ? requsitions : reqs))
                   : CircularProgressIndicator(),
               SizedBox(
                 height: 10,
@@ -132,37 +172,16 @@ class _RequsitionsListState extends State<RequsitionsList> {
     ]);
   }
 
-  // Widget createTable(List<Requisition> products) {
-  //   List<TableRow> rows = [];
-  //   rows.add(TableRow(children: [
-  //     Text("Requsition No",
-  //         style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-  //     Text("Requester",
-  //         style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-  //     Text("Description",
-  //         style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-  //     Text("Needed by date",
-  //         style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-  //     Text("Status",
-  //         style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-  //   ]));
-  //   for (Requisition p in products) {
-  //     rows.add(TableRow(children: [
-  //       Text(
-  //         p.reqNo,
-  //       ),
-  //       Text('Site Manager 101'),
-  //       Text(p.location),
-  //       Text(p.date),
-  //       Text('Approved')
-  //     ]));
-  //   }
-  //   // print(products);
-  //   return Table(
-  //     children: rows,
-  //     border: TableBorder.all(width: 1),
-  //   );
-  // }
+  void filterReqs() {
+    DateFormat format = DateFormat("dd-MM-yyyy");
+    DateTime startDate = format.parse(startDateController.text);
+    DateTime endDate = format.parse(endDateController.text);
+    setState(() {
+      reqs.removeWhere((e) => !(format.parse(e.date).isAfter(startDate) &&
+          format.parse(e.date).isBefore(endDate)));
+    });
+    print('filter state');
+  }
 
   Widget _getTable(List<Requisition> reqs) {
     return Container(
@@ -208,9 +227,8 @@ class _RequsitionsListState extends State<RequsitionsList> {
   }
 
   Widget _generateFirstColumnRow(BuildContext context, int index) {
-    final requsitions = Provider.of<List<Requisition>>(context);
     return Container(
-      child: Text(requsitions[index].reqNo),
+      child: Text(reqs[index].reqNo),
       width: 70,
       height: 52,
       padding: EdgeInsets.fromLTRB(5, 0, 0, 0),
@@ -219,20 +237,12 @@ class _RequsitionsListState extends State<RequsitionsList> {
   }
 
   Widget _generateRightHandSideColumnRow(BuildContext context, int index) {
-    final requsitions = Provider.of<List<Requisition>>(context);
+
     return Row(
       children: <Widget>[
         Container(
           child: Row(
-            children: <Widget>[
-              // Icon(
-              //     user.userInfo[index].status
-              //         ? Icons.notifications_off
-              //         : Icons.notifications_active,
-              //     color:
-              //         user.userInfo[index].status ? Colors.red : Colors.green),
-              Text('Nimal Lansa')
-            ],
+            children: <Widget>[Text('Site Manager')],
           ),
           width: 100,
           height: 52,
@@ -240,27 +250,27 @@ class _RequsitionsListState extends State<RequsitionsList> {
           alignment: Alignment.centerLeft,
         ),
         Container(
-          child: Text(requsitions[index].totPrice.toString()),
+          child: Text(reqs[index].totPrice.toString()),
           width: 85,
           height: 52,
           padding: EdgeInsets.fromLTRB(5, 0, 0, 0),
           alignment: Alignment.centerLeft,
         ),
         Container(
-          child: Text(requsitions[index].date),
+          child: Text(reqs[index].date),
           width: 100,
           height: 52,
           padding: EdgeInsets.fromLTRB(5, 0, 0, 0),
           alignment: Alignment.centerLeft,
         ),
         Container(
-          child: requsitions[index].status != null
+          child: reqs[index].status != null
               ? Text(
-                  requsitions[index].status,
+                  reqs[index].status,
                   style: TextStyle(
-                      color: requsitions[index].status == 'Approved'
+                      color: reqs[index].status == 'Approved'
                           ? Colors.green
-                          : requsitions[index].status == 'Declined'
+                          : reqs[index].status == 'Rejected'
                               ? Colors.red
                               : Colors.orange),
                 )
@@ -270,15 +280,18 @@ class _RequsitionsListState extends State<RequsitionsList> {
           padding: EdgeInsets.fromLTRB(5, 0, 0, 0),
           alignment: Alignment.centerLeft,
         ),
-        if (requsitions[index].status != null &&
-            requsitions[index].status == 'Approved')
+        if (reqs[index].status != null &&
+            reqs[index].status == 'Approved')
           Container(
             child: IconButton(
               icon: Icon(Icons.add_circle),
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => SupplierList()),
+                  MaterialPageRoute(
+                      builder: (context) => SupplierList(
+                            requisition: reqs[index],
+                          )),
                 );
               },
             ),

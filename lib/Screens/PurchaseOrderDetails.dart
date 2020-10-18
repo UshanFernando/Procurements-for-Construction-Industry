@@ -1,14 +1,9 @@
 import 'package:construction_procurement_app/Models/PurchaseOrder.dart';
-import 'package:construction_procurement_app/Models/PurchaseOrderItem.dart';
-import 'package:construction_procurement_app/Widgets/PurchaseOrderItemWidget.dart';
-import 'package:construction_procurement_app/Providers/RequisitionProvider.dart';
 import 'package:construction_procurement_app/Screens/PurchaseOrders.dart';
-import 'package:construction_procurement_app/Screens/PurchaseRequisition.dart';
-import 'package:construction_procurement_app/Screens/RequsitionsList.dart';
 import 'package:construction_procurement_app/Services/FirestoreService.dart';
+import 'package:construction_procurement_app/Widgets/PurchaseOrderItemWidget.dart';
 import 'package:construction_procurement_app/Widgets/RaisedGredientBtn.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class PurchaseOrderDetails extends StatelessWidget {
   final PurchaseOrder purchaseOrder;
@@ -19,9 +14,32 @@ class PurchaseOrderDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double width = MediaQuery.of(context).size.width;
-    double height = MediaQuery.of(context).size.height;
-
+    Widget cancelButton = FlatButton(
+      child: Text("Cancel"),
+      onPressed: () {
+        Navigator.pop(context, true);
+      },
+    );
+    Widget continueButton = FlatButton(
+      child: Text("Continue"),
+      onPressed: () {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => PurchaseOrders()),
+        );
+        FirestoreService service = FirestoreService();
+        service.removePO(purchaseOrder.reqNo);
+      },
+    );
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("AlertDialog"),
+      content: Text("Are you sure, you want to delete order?"),
+      actions: [
+        cancelButton,
+        continueButton,
+      ],
+    );
     return Stack(children: <Widget>[
       Image.asset(
         "Assets/bg.jpg",
@@ -100,19 +118,23 @@ class PurchaseOrderDetails extends StatelessWidget {
                           fontWeight: FontWeight.bold,
                         ),
                       )),
-                  // RaisedGradientButton(
-                  //     child: Text(
-                  //       'View Purchase Order',
-                  //       style: TextStyle(
-                  //           color: Colors.white, fontWeight: FontWeight.bold),
-                  //     ),
-                  //     onPressed: () {
-                  //       Navigator.push(
-                  //         context,
-                  //         MaterialPageRoute(
-                  //             builder: (context) => PurchaseOrders()),
-                  //       );
-                  //     }),
+                  RaisedGradientButton(
+                      child: Text(
+                        'Delete Purchase Order',
+                        style: TextStyle(
+                            color: Colors.white, fontWeight: FontWeight.bold),
+                      ),
+                      onPressed: () {
+                        // set up the buttons
+
+                        // show the dialog
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return alert;
+                          },
+                        );
+                      }),
                 ],
               ),
             ),
